@@ -1,8 +1,8 @@
 const path = require('path')
 
 const config = {
-  projectName: 'elm',
-  date: '2019-11-18',
+  projectName: 'client',
+  date: '2019-12-1',
   designWidth: 750,
   deviceRatio: {
     '640': 2.34 / 2,
@@ -27,15 +27,14 @@ const config = {
     }
   },
   defineConstants: {
+    LOCATION_APIKEY: JSON.stringify('PMNBZ-IUVLI-AZQGF-5VY2D-EGT4H-Z6F57')
   },
   alias: {
     '@': path.resolve(__dirname, '..', 'src')
   },
   copy: {
-    patterns: [
-    ],
-    options: {
-    }
+    patterns: [],
+    options: {}
   },
   weapp: {
     module: {
@@ -52,9 +51,7 @@ const config = {
         },
         pxtransform: {
           enable: true,
-          config: {
-
-          }
+          config: {}
         },
         url: {
           enable: true,
@@ -73,6 +70,7 @@ const config = {
     }
   },
   h5: {
+    esnextModules: ['taro-ui'],
     publicPath: '/',
     staticDirectory: 'static',
     module: {

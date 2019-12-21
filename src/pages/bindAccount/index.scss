@@ -1,0 +1,9 @@
+@import '../../style/variables/default.scss';
+page{
+  background-color: $color-bg;
+}
+.content{
+  width:600px;
+  margin: 0 auto;
+  margin-top: 60px;
+}

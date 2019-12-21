@@ -1,6 +1,8 @@
 import Taro, { Component } from '@tarojs/taro'
 import Index from './pages/index'
-
+import '@tarojs/async-await'
+import { Provider } from '@tarojs/mobx'
+import store from '@/store'
 import './app.scss'
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -14,28 +16,48 @@ class App extends Component {
   config = {
     pages: [
       'pages/index/index',
+      'pages/bindAccount/index',
     ],
+    subPackages:[
+      {
+        root:'pages/goods',
+        pages:[
+          'index'
+        ]
+      }
+    ],
+    'permission': {
+      'scope.userLocation': {
+        'desc': '你的位置信息将用于选择地理位置'
+      }
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    }
+    },
+    networkTimeout: {
+      request: 8000,
+      uploadFile: 20000
+    },
   }
 
-  componentDidMount () {}
+  componentDidMount() { }
 
-  componentDidShow () {}
+  componentDidShow() { }
 
-  componentDidHide () {}
+  componentDidHide() { }
 
-  componentDidCatchError () {}
+  componentDidCatchError() { }
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数
-  render () {
+  render() {
     return (
-      <Index />
+      <Provider store={store}>
+        <Index />
+      </Provider>
     )
   }
 }
