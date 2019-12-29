@@ -1,10 +1,21 @@
-import { observable } from 'mobx'
-import elm from '@/service/request'
-const store = observable({
-  async getCode(){
-    const doc = await elm.get('/user/getCode')
-    return doc
-  }
-})
+import { observable } from "mobx";
+import request from "@/service/request";
 
-export default store
+const store = observable({
+  async getCode(phone) {
+    const doc = await request("/user/getCode", "POST", {
+      phone
+    });
+    return doc;
+  },
+
+  async bindAccount(phone, code) {
+    const doc = await request("/user/bindAccount", "POST", {
+      phone,
+      code
+    });
+    return;
+  }
+});
+
+export default store;
