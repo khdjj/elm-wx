@@ -1,0 +1,62 @@
+// .menuview_main {
+//   .menucategory {
+//     overflow-y: auto;
+//     height: 100%;
+//     background-color: #f8f8f8;
+//     padding-bottom: 10px;
+//     width: 15%;
+//     text-align: center;
+
+//     &_categoryWrapper {
+//       position: relative;
+//       z-index: 0;
+//     }
+//     &_categoryItem {
+//       position: relative;
+//       font-size: 0.32rem;
+//       color: #666;
+//       text-align: center;
+//       margin: 4px 2px;
+//       display: block;
+//       padding: 10px 5px;
+
+//     }
+//   }
+// }
+
+.menuview-menuList {
+  position: relative;
+  height: 100%;
+  padding-bottom: 360px;
+  overflow-y: auto;
+  .heading {
+    position: relative;
+    margin-left: 30px;
+    padding: 20px 0;
+    .category_title {
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      .category_name {
+        margin-right: 1.333333vw;
+        font-weight: 700;
+        font-size: 32px;
+        color: #666;
+        -webkit-flex: none;
+        flex: none;
+      }
+      .category_desc {
+        flex: 1;
+        color: #999;
+        font-size: 25px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+image {
+  width: 100%;
+  height: 100%;
+}

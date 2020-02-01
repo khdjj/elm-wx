@@ -1,0 +1,14 @@
+.list_content {
+  .seachrow {
+    border-bottom: 0.266667vw solid #eee;
+    padding: 2.533333vw 0 3.333333vw;
+    &_title {
+      color: #333;
+      font-size: 32px;
+    }
+    &_location {
+      color: #999;
+      font-size: 28px;
+    }
+  }
+}

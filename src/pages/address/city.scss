@@ -1,0 +1,18 @@
+.search_content {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #fff;
+  width: 100%;
+  z-index: 9999;
+  overflow: none;
+}
+.search_item {
+  width: 100%;
+  height: 85px;
+  padding-left: 30px;
+  line-height: 85px;
+  border-bottom: 1px solid #eee;
+}

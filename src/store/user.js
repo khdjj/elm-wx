@@ -14,7 +14,7 @@ const store = observable({
       phone,
       code
     });
-    return;
+    return doc;
   }
 });
 

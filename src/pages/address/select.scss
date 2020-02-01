@@ -1,0 +1,60 @@
+.search_content {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  .province {
+    font-size: 28px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 10%;
+    margin-left: 30px;
+  }
+  .at-search-bar {
+    width: 600px;
+  }
+}
+.current_address {
+  margin-top: 20px;
+  .label {
+    padding: 30px;
+    height: 50px;
+    background: #eee;
+    font-size: 32px;
+  }
+  .location {
+    display: flex;
+    padding: 30px;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+
+    &_locate {
+      display: flex;
+      flex-direction: row;
+      justify-items: center;
+      align-items: center;
+    }
+
+    &_address {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &_icon {
+      width: 68px;
+      height: 68px;
+      background: #2395ff;
+      padding: 10px 16px;
+      border-radius: 100%;
+      box-sizing: border-box;
+      margin-right: 15px;
+    }
+    &_text {
+      font-size: 30px;
+      color: #2395ff;
+    }
+  }
+}

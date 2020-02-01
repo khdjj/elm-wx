@@ -1,0 +1,104 @@
+.shop-item {
+  padding: 10px 0;
+  position: relative;
+  font-size: 32px;
+  .shop-info {
+    display: flex;
+    justify-items: flex-start;
+    align-items: stretch;
+    .shop-logo {
+      width: 175px;
+      height: 156px;
+      &-img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .shop-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 30px;
+      width: 100%;
+      &_title {
+        font-weight: 700;
+        font-size: 34px;
+      }
+      &_info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .rateWrap {
+          display: flex;
+          flex-direction: row;
+          .rate {
+            margin-right: 10px;
+            margin-left: 10px;
+          }
+        }
+        .delivery-delivery {
+          background-color: #0097ff;
+          padding: 0 3px;
+          text-align: center;
+          color: #fff;
+        }
+        .timedistanceWrap {
+          color: #999;
+        }
+        .divider::after {
+          margin: 10px;
+          color: #ddd;
+          content: "|";
+        }
+      }
+    }
+  }
+  .shop-activity {
+    padding-left: 127px;
+    .tagLine {
+      margin-top: 30px;
+      .tag {
+        position: relative;
+        font-size: 28px;
+        white-space: nowrap;
+        color: #666666;
+        border-color: #dddddd;
+        padding: 0 15px;
+        border: 1px solid #dddddd;
+        margin: 0 12px;
+        padding: 0 10px;
+      }
+    }
+    .activities {
+      display: flex;
+      justify-content: space-between;
+      align-content: stretch;
+      .activityList {
+        padding-right: 10px;
+        width: 85%;
+        .actRow {
+          display: flex;
+          align-items: center;
+          justify-items: stretch;
+          margin-bottom: 12px;
+          .iconWrap {
+            width: 32px;
+            height: 32px;
+            background-color: #eca;
+            padding: 8px;
+            color: #fff;
+            font-size: 35px;
+            margin-right: 24px;
+            display: table;
+          }
+          .desc {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #666;
+          }
+        }
+      }
+    }
+  }
+}

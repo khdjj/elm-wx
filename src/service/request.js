@@ -12,16 +12,18 @@ const http = function(url, method, data, header) {
   method = method.toUpperCase() || "GET";
   return new Promise((resolve, reject) => {
     Taro.request({
-      url: baseUrl + "/user/getCode",
+      url: baseUrl + url,
       data,
       method,
       header: {
         "content-type": "application/json"
       },
       success: res => {
-        resolve(res);
+        console.log(res.data);
+        resolve(res.data);
       },
       fail: err => {
+        console.log(err);
         Taro.showToast({
           title: "网络错误"
         });

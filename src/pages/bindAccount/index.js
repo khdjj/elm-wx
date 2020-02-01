@@ -4,12 +4,12 @@ import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import { AtButton, AtInput, AtToast } from "taro-ui";
 import Banner from "@/components/banner";
-import { phoneisValid } from "@/service/utils";
+import { phoneisValid, setLocalItem } from "@/service/utils";
 import "./index.scss";
 
 @observer
 @inject("userStore")
-export default class Index extends Component {
+export default class Index extends Taro.Component {
   config = {
     navigationBarTitleText: "登录"
   };
@@ -30,32 +30,7 @@ export default class Index extends Component {
     this.store[key] = e;
   };
 
-  async onClickSubmit() {
-    const { mobile, code } = this.store;
-    const { userStore: store } = this.props;
-    const doc = await store.bindAccount(mobile, code);
-    if (doc.error) {
-      let errText = "";
-      switch (doc.error) {
-        case 4002:
-          errText = "对不起，验证码错误，请重试";
-          break;
-        case 4003:
-          errText = "对不起，验证码已过期，请重试";
-          break;
-        default:
-          errText: "对不起，出现错误，请重试";
-      }
-      Taro.showModal({
-        title: "错误提示",
-        content: errText
-      });
-      return;
-    }
-    // Taro.navigateTo('/auth/index')
-  }
-
-  async getCode() {
+  getCode = async phone => {
     const { userStore: store } = this.props;
     try {
       const doc = await store.getCode(phone);
@@ -68,9 +43,9 @@ export default class Index extends Component {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  handleChangeStatus() {
+  handleChangeStatus = () => {
     const store = this.store;
     const { mobile } = store;
     if (mobile == "" || !phoneisValid(mobile)) {
@@ -92,11 +67,44 @@ export default class Index extends Component {
         store.time = 60;
       }
     }, 1000);
-  }
+  };
 
-  onGotUserInfo() {
-    console.error(e);
-  }
+  onGotUserInfo = async e => {
+    const data = e.detail;
+    if (!data.userInfo) return;
+    const { mobile, code } = this.store;
+    const { userStore: store } = this.props;
+    setLocalItem("userInfo", data.userInfo);
+    Taro.showLoading();
+    try {
+      const doc = await store.bindAccount(mobile, code);
+      const { error } = doc;
+      if (error) {
+        let errText = "";
+        switch (doc.error) {
+          case 4002:
+            errText = "对不起，验证码错误，请重试";
+            break;
+          case 4003:
+            errText = "对不起，验证码已过期，请重试";
+            break;
+          default:
+            errText: "对不起，出现错误，请重试";
+        }
+        Taro.showModal({
+          title: "错误提示",
+          content: errText
+        });
+        return;
+      }
+      Taro.navigateTo({ url: "/pages/goods/index" });
+    } catch (e) {
+      console.error(e);
+      return;
+    } finally {
+      Taro.hideLoading();
+    }
+  };
 
   render() {
     const { mobile, code, isValid, codeText, getCodeValid } = this.store;
@@ -128,12 +136,11 @@ export default class Index extends Component {
               </AtButton>
             </AtInput>
             <AtButton
-              // onClick={this.onClickSubmit}
-              disabled={!isValid}
               type="primary"
-              // open-type="getUserInfo"
-              // lang="zh_CN"
-              // onGetUserInfo={this.onGotUserInfo.bind(this)}
+              openType="getUserInfo"
+              lang="zh_CN"
+              disabled={!isValid}
+              onGetUserInfo={this.onGotUserInfo}
             >
               登录
             </AtButton>
