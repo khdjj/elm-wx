@@ -1,6 +1,8 @@
 import userStore from './user'
+import restaurantStore from './restaurant'
 
 const store = {
-  userStore
+  userStore,
+  restaurantStore
 }
 export default store

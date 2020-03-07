@@ -2,6 +2,8 @@ import { observable } from "mobx";
 import request from "@/service/request";
 
 const store = observable({
+  latitude: "",
+  longitude: "",
   async getCode(phone) {
     const doc = await request("/user/getCode", "POST", {
       phone

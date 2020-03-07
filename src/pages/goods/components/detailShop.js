@@ -9,6 +9,8 @@ import "./detailShop.scss";
 @observer
 export default class Index extends Component {
   render() {
+    const { menus } = this.props;
+    const { foods = [] } = menus;
     return (
       // <View className="menuview_main">
       //   <View className="menucategory">
@@ -24,12 +26,14 @@ export default class Index extends Component {
         <View className="menu">
           <View className="heading">
             <View className="category_title">
-              <View className="category_name">热销</View>
-              <View className="category_desc">大家喜欢吃，才叫真好吃。</View>
+              <View className="category_name">{menus.name}</View>
+              <View className="category_desc">{menus.description}</View>
             </View>
           </View>
           {/* 具体商品   */}
-          <MenuItem />
+          {foods.map(food => (
+            <MenuItem food={food} />
+          ))}
         </View>
       </View>
     );

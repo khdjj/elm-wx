@@ -8,6 +8,7 @@ const h = {
   Authorization: Taro.getStorage("authorization")
 };
 const http = function(url, method, data, header) {
+  console.log(url,method)
   header = header || h;
   method = method.toUpperCase() || "GET";
   return new Promise((resolve, reject) => {

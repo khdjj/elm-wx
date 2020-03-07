@@ -14,18 +14,17 @@ export default class Main extends Component {
     sort: "综合排序"
   };
   handleSort = e => {
-    console.error("handleSort");
     let { show } = this.store;
     this.store.show = !show;
   };
 
   handleDrawerClick = e => {
-    console.error(e);
-    console.error(sortItems[e]);
   };
 
   render() {
     const { show, sort } = this.store;
+    const { shops = {} } = this.props;
+    const { items = [] } = shops;
     return (
       <View className="page">
         <View className="home-filter">
@@ -53,7 +52,9 @@ export default class Main extends Component {
           items={sortTypes}
           onItemClick={this.handleDrawerClick}
         />
-        <ShopItem />
+        {items.map(shopItem => (
+          <ShopItem items={shopItem} />
+        ))}
       </View>
     );
   }

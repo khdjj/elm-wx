@@ -92,6 +92,23 @@ function throttle(callback, duration) {
   };
 }
 
+function getImageUrl(url) {
+  if (typeof url !== "string") return url;
+  const reg = /(jpeg|png|jpg|bmp|gif)$/;
+  const s1 = url.substring(0, 1);
+  const s2 = url.substring(1, 3);
+  const s3 = url.substring(3, url.length);
+  const s4 = reg.exec(url);
+  return `${s1}/${s2}/${s3}.${s4[1]}`;
+}
+
+function formatDistance(distance) {
+  if (typeof distance !== "number") return "";
+  const d1 = distance / 1000;
+  if (distance < 0) return `${d1}m`;
+  else return `${d1.toFixed(2)}km`;
+}
+
 module.exports = {
   showErrorAndRelaunch,
   showError,
@@ -100,5 +117,7 @@ module.exports = {
   setLocalItem,
   getLocalItem,
   debounce,
-  throttle
+  throttle,
+  getImageUrl,
+  formatDistance
 };
