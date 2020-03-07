@@ -1,0 +1,85 @@
+.ordercard {
+  display: block;
+  margin-top: 20px;
+  background-color: #fff;
+  padding: 10px;
+  padding-left: 20px;
+  .ordercard-body {
+    display: flex;
+    .ordercard-avatar {
+      width: 76px;
+      height: 76px;
+    }
+    .ordercard-content {
+      margin-left: 20px;
+      flex: 1;
+      .ordercard-head {
+        border-bottom: 1px solid #eee;
+        padding-right: 10px;
+        padding-bottom: 10px;
+        .title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .name {
+            display: inline-block;
+            max-width: 10em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 32px;
+          }
+          .status {
+            font-size: 28px;
+            text-align: right;
+            color: #333;
+            max-width: 14em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+        .datetime {
+          font-size: 28px;
+          color: #999;
+        }
+      }
+      .ordercard-detail {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        .detail {
+          display: inline-block;
+          max-width: 300px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 32px;
+        }
+        .price {
+          text-align: right;
+          font-size: 30px;
+          color: #333;
+          font-weight: 700;
+        }
+      }
+      .ordercard-bottom {
+        position: relative;
+        padding: 10px;
+        height: 60px;
+        width: 100%;
+        .cardbutton {
+          position: absolute;
+          right: 20px;
+          border: 1px solid #2395ff;
+          outline: none;
+          font-size: 28px;
+          color: #2395ff;
+          margin-left: 20px;
+          width: 200px;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
