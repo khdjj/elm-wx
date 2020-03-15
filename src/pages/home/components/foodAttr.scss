@@ -1,0 +1,117 @@
+.specpanel {
+  &_root {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1002;
+    background: #fff;
+  }
+  &_main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0 50px;
+    height: 100%;
+    .closeBtn {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      width: 55px;
+      height: 55px;
+      background: rgba(0, 0, 0, 0.6);
+      text-align: center;
+      line-height: 55px;
+      border-radius: 50%;
+      color: #fff;
+    }
+  }
+
+  &_header {
+    padding-bottom: 60px;
+    display: flex;
+    .image {
+      width: 300px;
+      height: 228px;
+    }
+  }
+  &_info {
+    display: flex;
+    padding-left: 30px;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: space-between;
+  }
+  &_name {
+    color: #333;
+    font-size: 32px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+  &_price {
+    color: rgb(255, 83, 57);
+    font-size: 33px;
+    font-weight: 500;
+  }
+  &_body {
+    flex: 1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  &_colTitle {
+    color: #666;
+    font-size: 30px;
+    margin-bottom: 30px;
+    display: block;
+    width: 100%;
+  }
+  &_colBody {
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    .panel_item {
+      display: inline-block;
+      padding: 0 20px;
+      border-radius: 15px;
+      background-color: #f5f5f5;
+      color: #333;
+      font-size: 0.346667rem;
+      text-align: center;
+      margin: 20px 20px 0 0;
+      height: 72px;
+      line-height: 72px;
+      font-size: 28px;
+      min-width: 142px;
+    }
+    .panel_activeItem {
+      display: inline-block;
+      padding: 0 20px;
+      border-radius: 15px;
+      font-size: 0.346667rem;
+      text-align: center;
+      margin: 20px 20px 0 0;
+      height: 72px;
+      line-height: 72px;
+      font-size: 28px;
+      min-width: 142px;
+      color: rgb(35, 149, 255);
+      background-color: rgba(35, 149, 255, 0.2);
+    }
+  }
+  &_doneBtn {
+    background-color: #2395ff;
+    width: 100%;
+    height: 80px;
+    color: #fff;
+    font-size: 34px;
+    font-weight: 700;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 80px;
+    margin-bottom: 21px;
+  }
+}

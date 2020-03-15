@@ -78,7 +78,7 @@ export default class Index extends Taro.Component {
     Taro.showLoading();
     try {
       const doc = await store.bindAccount(mobile, code);
-      const { error } = doc;
+      const { error, data,token } = doc;
       if (error) {
         let errText = "";
         switch (doc.error) {
@@ -97,6 +97,8 @@ export default class Index extends Taro.Component {
         });
         return;
       }
+      setLocalItem("sso", data);
+      setLocalItem("token",token)
       Taro.navigateTo({ url: "/pages/goods/index" });
     } catch (e) {
       console.error(e);

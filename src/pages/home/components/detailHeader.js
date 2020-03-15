@@ -2,17 +2,20 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
+import CartFoodItem from "./cartFoodItem";
 import shopBg from "@/images/banner.jpg";
 import { getImageUrl, formatDistance } from "@/service/utils";
-import { AtCurtain, AtFloatLayout } from "taro-ui";
+import { AtCurtain, AtFloatLayout, AtIcon } from "taro-ui";
 
 import "./detailHeader.scss";
 
+@inject("shoppingCartStore")
 @observer
-export default class Index extends Component {
+export default class DetailHeader extends Component {
   @observable store = {
     curtainIsOpened: false,
-    floatLayoutIsOpened: false
+    floatLayoutIsOpened: false,
+    isOpened: false
   };
 
   onSearch = () => {};
@@ -27,10 +30,21 @@ export default class Index extends Component {
     this.store.floatLayoutIsOpened = !floatLayoutIsOpened;
   };
 
+  handleClose = () => {
+    const { isOpened } = this.store;
+    this.store.isOpened = !isOpened;
+  };
+
+  handletoPay = () => {
+    Taro.navigateTo({ url: "/pages/order/confirmOrder" });
+  };
+
   render() {
-    const { curtainIsOpened, floatLayoutIsOpened } = this.store;
+    const { curtainIsOpened, floatLayoutIsOpened, isOpened } = this.store;
     const { rst = {} } = this.props;
-    const { shop_sign } = rst;
+    const { shoppingCartStore: sStore } = this.props;
+    const { foodItem, price, isAllowDelivery, difference } = sStore;
+    const { shop_sign = {} } = rst;
     return (
       <View>
         <View className="headerBanner">
@@ -71,7 +85,7 @@ export default class Index extends Component {
                 </Text>
               </View>
               {/* 优惠 */}
-              {/* <View className="discount" onClick={this.handleOpenFloatLayout}>
+            {/* <View className="discount" onClick={this.handleOpenFloatLayout}>
                 查看优惠
               </View>
             </View> * */}
@@ -113,13 +127,11 @@ export default class Index extends Component {
               <View className="notice">
                 <Text className="notice_title">公告</Text>
               </View>
-              <Text className="notice_content">
-                {rst.promotion_info}
-              </Text>
+              <Text className="notice_content">{rst.promotion_info}</Text>
             </View>
           </AtCurtain>
 
-          <AtFloatLayout
+          {/* <AtFloatLayout
             isOpened={floatLayoutIsOpened}
             title="优惠活动"
             onClose={this.handleOpenFloatLayout.bind(this)}
@@ -130,8 +142,38 @@ export default class Index extends Component {
               </Text>
               <Text>超级会员领6元无门槛红包</Text>
             </View>
-          </AtFloatLayout>
+            
+          </AtFloatLayout> */}
         </View>
+        <View className="footer">
+          <View className="shopping_icon">
+            {foodItem.length > 0 ? (
+              <AtIcon value="shopping-cart" size="40" color="#3190e8" />
+            ) : (
+              <AtIcon value="shopping-cart" size="40" color="#eee" />
+            )}
+          </View>
+          <Text
+            onClick={this.handleClose.bind(this)}
+            className="bottomNav_carttotal"
+          >
+            ¥{price}
+          </Text>
+          {isAllowDelivery ? (
+            <Button className="settlement_btn" onClick={this.handletoPay}>
+              去结算
+            </Button>
+          ) : (
+            <View className="submit_btn">还差¥{difference}起送</View>
+          )}
+        </View>
+        <AtFloatLayout
+          isOpened={isOpened}
+          title="已选商品"
+          onClose={this.handleClose.bind(this)}
+        >
+          {foodItem.length > 0 && foodItem.map(f => <CartFoodItem food={f} />)}
+        </AtFloatLayout>
       </View>
     );
   }

@@ -8,18 +8,20 @@ import { getImageUrl, formatDistance } from "@/service/utils";
 import "./shopItem.scss";
 
 @observer
-export default class Main extends Component {
+export default class ShopItem extends Component {
   @observable store = {};
-
-  handleToDetail = () => {
-    Taro.navigateTo({ url: `/pages/goods/detail?id=${299}` });
+  handleToDetail = rst => {
+    Taro.navigateTo({ url: `/pages/home/detail?id=${299}` });
   };
   render() {
     const { items = {} } = this.props;
     const { restaurant = {} } = items;
     const { delivery_mode } = restaurant;
     return (
-      <View className="shop-item" onClick={this.handleToDetail}>
+      <View
+        className="shop-item"
+        onClick={() => this.handleToDetail(restaurant)}
+      >
         <View className="shop-info">
           <View className="shop-logo">
             <Image

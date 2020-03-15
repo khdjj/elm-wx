@@ -17,11 +17,19 @@ class App extends Component {
     subPackages: [
       {
         root: "pages/goods",
-        pages: ["index", "detail"]
+        pages: ["index"]
+      },
+      {
+        root: "pages/home",
+        pages: ["detail"]
       },
       {
         root: "pages/address",
-        pages: ["city", "new", "select", "search"]
+        pages: ["city", "new", "select", "search", "selectOrderAddress"]
+      },
+      {
+        root: "pages/order",
+        pages: ["confirmOrder", "remark"]
       }
     ],
     permission: {
@@ -38,7 +46,8 @@ class App extends Component {
     networkTimeout: {
       request: 8000,
       uploadFile: 20000
-    }
+    },
+    onReachBottomDistance: 50
   };
 
   componentDidMount() {}

@@ -1,0 +1,75 @@
+.header {
+  width: 100%;
+  height: 150px;
+  background: rgb(1, 141, 254);
+  .location-info {
+    position: relative;
+    display: flex;
+    .location-icon {
+      padding: 10px;
+      position: absolute;
+      top: 0;
+      left: 10px;
+    }
+    .location-title {
+      margin-left: 70px;
+      padding: 10px;
+      color: #fff;
+      font-size: 32px;
+      width: 70%;
+      height: 32px;
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+
+.container {
+  margin: 0 10px;
+  .banner-image {
+    height: 218px;
+    width: 100%;
+    margin: 10px 0 10px 0;
+  }
+  .shoplist-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::before {
+      margin-right: 10px;
+    }
+    &::after {
+      margin-left: 10px;
+    }
+    &::before,
+    &::after {
+      display: block;
+      content: '';
+      width: 0.533333rem;
+      width: 5.333333vw;
+      height: 0.026667rem;
+      height: 0.266667vw;
+      background-color: #999;
+    }
+  }
+  .nodatatip-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .nodataimg {
+      width: 100%;
+      height: 495px;
+    }
+    .enter-address-btn {
+      margin: 60px 0;
+      font-size: 30px;
+      background: #56d176;
+      color: #fff;
+    }
+  }
+}

@@ -1255,10 +1255,22 @@
   dependencies:
     "@tarojs/utils" "1.3.22"
 
+"@tarojs/taro@^2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.taobao.org/@tarojs/taro/download/@tarojs/taro-2.0.6.tgz#42eb4f9e706ad3b6c30e520f3bfdb662a811a76a"
+  integrity sha1-QutPnnBq07bDDlIPO/22YqgRp2o=
+  dependencies:
+    "@tarojs/utils" "2.0.6"
+
 "@tarojs/utils@1.3.22":
   version "1.3.22"
   resolved "https://registry.npm.taobao.org/@tarojs/utils/download/@tarojs/utils-1.3.22.tgz#38d473fc538a7ad6d7b2eab93eba3552794037d9"
   integrity sha1-ONRz/FOKetbXsuq5Pro1UnlAN9k=
+
+"@tarojs/utils@2.0.6":
+  version "2.0.6"
+  resolved "https://registry.npm.taobao.org/@tarojs/utils/download/@tarojs/utils-2.0.6.tgz#1c1aabf8d3c33ebbeb431fe9f98c3d2909829212"
+  integrity sha1-HBqr+NPDPrvrQx/p+Yw9KQmCkhI=
 
 "@tarojs/webpack-runner@1.3.2":
   version "1.3.2"

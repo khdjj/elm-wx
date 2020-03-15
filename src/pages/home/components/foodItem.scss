@@ -20,7 +20,6 @@
     &_info {
       flex: 1;
       position: relative;
-      padding-bottom: 6.666667vw;
       padding-right: 4vw;
     }
     &_name {
@@ -28,7 +27,7 @@
       overflow: hidden;
       font-size: 32px;
       white-space: nowrap;
-      width: 100%;
+      width: 80%;
       text-overflow: ellipsis;
     }
     &_desc {
@@ -54,12 +53,16 @@
       display: flex;
       -webkit-align-items: baseline;
       align-items: baseline;
+      justify-content: space-between;
       .salesInfo_originPrice {
         font-size: 28px;
         color: #999;
         margin-left: 1.6vw;
         text-decoration: line-through;
-        margin-right: 139px;
+        // margin-right: 139px;
+      }
+      .salesInfo_icon{
+        float: right;
       }
     }
   }

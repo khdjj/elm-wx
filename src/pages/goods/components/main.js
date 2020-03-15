@@ -4,7 +4,7 @@ import { observable, toJS } from "mobx";
 import { AtIcon, AtDrawer } from "taro-ui";
 import { observer, inject } from "@tarojs/mobx";
 import { sortTypes, sortItems } from "@/consts/sort";
-import ShopItem from "../components/shopItem";
+import ShopItem from "../commonPage/shopItem";
 import "./main.scss";
 
 @observer
@@ -18,6 +18,7 @@ export default class Main extends Component {
     this.store.show = !show;
   };
 
+
   handleDrawerClick = e => {
   };
 
@@ -25,6 +26,7 @@ export default class Main extends Component {
     const { show, sort } = this.store;
     const { shops = {} } = this.props;
     const { items = [] } = shops;
+    console.error(items)
     return (
       <View className="page">
         <View className="home-filter">
@@ -53,7 +55,7 @@ export default class Main extends Component {
           onItemClick={this.handleDrawerClick}
         />
         {items.map(shopItem => (
-          <ShopItem items={shopItem} />
+          <ShopItem taroKey={shopItem.restaurant.id} items={shopItem} />
         ))}
       </View>
     );

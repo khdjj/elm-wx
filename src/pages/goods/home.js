@@ -3,23 +3,19 @@ import { View, Text, Image, Button } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import {
-  AtButton,
-  AtInput,
   AtIcon,
   AtSearchBar,
   AtGrid,
-  AtTabBar,
-  AtDrawer
 } from "taro-ui";
 import { bannerTypes } from "@/consts/banner";
 import pinzhitaocanImage from "@/images/pinzhitaocan.png";
 import Main from "./components/main";
 
-import "./index.scss";
+import './home.scss'
 
 @inject("restaurantStore", "userStore")
 @observer
-export default class Index extends Component {
+export default class Home extends Component {
   config = {
     navigationBarTitleText: "首页"
   };
@@ -76,7 +72,6 @@ export default class Index extends Component {
 
   render() {
     const { location, search, shops } = this.store;
-    console.error(shops);
     return (
       <View className="page">
         <View className="header">
@@ -108,6 +103,7 @@ export default class Index extends Component {
           <View className="shoplist-title">推荐商家</View>
           {shops ? (
             <Main shops={shops} />
+            // <View/>
           ) : (
             <View className="nodatatip-wrapper">
               <Image

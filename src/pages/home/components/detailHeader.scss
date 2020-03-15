@@ -151,3 +151,54 @@
     }
   }
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  height: 120px;
+  background-color: rgba(61, 61, 61, 0.9);
+  z-index: 1000;
+  .shopping_icon {
+    margin-left: 80px;
+  }
+  .bottomNav_carttotal {
+    font-size: 41px;
+    line-height: normal;
+    color: #fff;
+    width: 53%;
+    margin-left: 38px;
+  }
+  .submit_btn {
+    height: 120px;
+    line-height: 120px;
+    // width: 20%;
+    background-color: #535356;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 28px;
+    font-weight: 700;
+    -webkit-user-select: none;
+    user-select: none;
+    word-break: keep-all;
+  }
+  .settlement_btn {
+    height: 120px;
+    // width: 20%;
+    background-color: #38ca73;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 700;
+    -webkit-user-select: none;
+    user-select: none;
+    line-height: 120px;
+    word-break: keep-all;
+  }
+}

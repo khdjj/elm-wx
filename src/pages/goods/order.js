@@ -3,7 +3,7 @@ import { View, Text, Image, Button } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import { AtButton } from "taro-ui";
-import "./index.scss";
+import "./order.scss";
 
 @observer
 export default class Index extends Component {
@@ -64,41 +64,3 @@ export default class Index extends Component {
     );
   }
 }
-
-// import Taro, { Component } from "@tarojs/taro";
-// import { View, Text, Image } from "@tarojs/components";
-// import { observable, toJS } from "mobx";
-// import { observer, inject } from "@tarojs/mobx";
-// import { AtImage } from "taro-ui";
-// import "./index.scss";
-// @observer
-// export default class Index extends Component {
-
-//   }
-
-//   onSearch = () => {};
-
-//   handleSelectCity = () => {
-//     Taro.navigateTo({ url: "/pages/address/select" });
-//   };
-
-//   render() {
-//     const { location, search } = this.store;
-//     return (
-//       <View className="page">
-//         <View className="ordercard">
-//           <View className="ordercard-body">
-//             <View className="ordercard-avatar">
-//               <AtImage src="https://cube.elemecdn.com/7/7b/7b3176410ab30f09a3dc459861030jpeg.jpeg?x-oss-process=image/format,webp/resize,w_64,h_64,m_fixed" />
-//             </View>
-//             <View className="ordercard-content">
-//               <View className="ordercard-head">
-//                 <View className="title"></View>
-//               </View>
-//             </View>
-//           </View>
-//         </View>
-//       </View>
-//     );
-//   }
-// }
