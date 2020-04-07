@@ -15,51 +15,46 @@ export default class ShopItem extends Component {
   };
   render() {
     const { items = {} } = this.props;
-    const { restaurant = {} } = items;
-    const { delivery_mode } = restaurant;
     return (
       <View
         className="shop-item"
-        onClick={() => this.handleToDetail(restaurant)}
+        onClick={() => this.handleToDetail(items)}
       >
         <View className="shop-info">
           <View className="shop-logo">
             <Image
               className="shop-logo-img"
-              src={`https://cube.elemecdn.com/${getImageUrl(
-                restaurant.image_path
-              )}?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed`}
+              src={getImageUrl(items.image_path,items.tag)}
             />
           </View>
           <View className="shop-main">
-            <View className="shop-main_title">{restaurant.name}</View>
+            <View className="shop-main_title">{items.name}</View>
             <View className="shop-main_info">
               <View className="rateWrap">
                 <AtRate value={3.5} size={12} />
-                <Text className="rate">{restaurant.rating}</Text>
-                <Text>月售{restaurant.recent_order_num}单</Text>
+                <Text className="rate">{items.rating}</Text>
+                <Text>月售{items.recent_order_num || 0}单</Text>
               </View>
-              <View className="delivery-delivery">{delivery_mode.text}</View>
             </View>
             <View className="shop-main_info">
               <View className="moneylimit">
                 <Text className="divider">
-                  ¥{restaurant.float_minimum_order_amount}起送
+                  ¥{items.float_minimum_order_amount}起送
                 </Text>
-                <Text>配送费{restaurant.float_delivery_fee}</Text>
+                <Text>配送费{items.float_delivery_fee}</Text>
               </View>
               <View className="timedistanceWrap">
                 <Text className="divider">
-                  {formatDistance(restaurant.distance)}
+                  {formatDistance(items.distance)}
                 </Text>
-                <Text>{restaurant.order_lead_time}分钟</Text>
+                <Text>{items.order_lead_time}分钟</Text>
               </View>
             </View>
           </View>
         </View>
         <View className="shop-activity">
           <View className="tagLine">
-            {(restaurant.support_tags || []).map((item, index) => (
+            {(items.support_tags || []).map((item, index) => (
               <Text className="tag">{item.text}</Text>
             ))}
           </View>

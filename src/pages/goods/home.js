@@ -2,76 +2,48 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image, Button } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
-import {
-  AtIcon,
-  AtSearchBar,
-  AtGrid,
-} from "taro-ui";
+import { AtIcon, AtSearchBar, AtGrid } from "taro-ui";
 import { bannerTypes } from "@/consts/banner";
 import pinzhitaocanImage from "@/images/pinzhitaocan.png";
 import Main from "./components/main";
 
-import './home.scss'
+import "./home.scss";
 
 @inject("restaurantStore", "userStore")
 @observer
 export default class Home extends Component {
   config = {
-    navigationBarTitleText: "首页"
+    navigationBarTitleText: "首页",
   };
 
   @observable store = {
-    location: "未知定位",
     search: "",
     address: {},
-    shops: null
   };
 
-  fetchRestList = async (
-    offset = 0,
-    limit = 8,
-    extras = "activities",
-    extra_filters = "home"
-  ) => {
-    const { restaurantStore: restStore, userStore } = this.props;
-    const { address } = this.store;
-    const doc = await restStore.getRestaurant({
-      latitude: address.latitude,
-      longitude: address.longitude,
-      offset,
-      limit,
-      extras,
-      extra_filters
-    });
-    this.store.shops = doc.ret;
-    userStore.latitude = address.latitude;
-    userStore.longitude = address.longitude;
+  handleSearchChange = (value) => {
+    this.store.search = value;
   };
 
-  async componentDidMount() {
-    try {
-      const doc = await Taro.getLocation();
-      console.error(doc);
-      if (doc) {
-        this.store.address = doc;
-        this.fetchRestList();
-      }
-    } catch (e) {
-      const { errMsg } = e;
-      if (errMsg && errMsg.includes("fail auth")) {
-        return;
-      }
+  onSearch = () => {
+    const { onSearch } = this.props;
+    if (onSearch) {
+      this.props.onSearch(this.store.search);
+      this.store.search = "";
     }
-  }
+  };
 
-  onSearch = () => {};
+  handleSelectCagetory = (value) => {
+    Taro.navigateTo({ url: `/pages/goods/searchFood?cagegory=${value}` });
+  };
 
   handleSelectCity = () => {
     Taro.navigateTo({ url: "/pages/address/select" });
   };
 
   render() {
-    const { location, search, shops } = this.store;
+    const { search } = this.store;
+    const { shops = [], location } = this.props;
     return (
       <View className="page">
         <View className="header">
@@ -88,8 +60,10 @@ export default class Home extends Component {
           </View>
           <AtSearchBar
             value={search}
+            showActionButton
+            onChange={this.handleSearchChange}
             placeholder="输入商家、商品名称"
-            onChange={this.onSearch.bind(this)}
+            onActionClick={this.onSearch}
           />
         </View>
         <View className="container">
@@ -98,12 +72,12 @@ export default class Home extends Component {
             hasBorder={false}
             data={bannerTypes}
             columnNum={5}
+            onClick={this.handleSelectCagetory}
           />
           <Image src={pinzhitaocanImage} className="banner-image" />
           <View className="shoplist-title">推荐商家</View>
-          {shops ? (
+          {shops.length > 0 ? (
             <Main shops={shops} />
-            // <View/>
           ) : (
             <View className="nodatatip-wrapper">
               <Image
@@ -111,7 +85,12 @@ export default class Home extends Component {
                 className="nodataimg"
               />
               <Text>输入地址后才能订餐哦！</Text>
-              <Button className="enter-address-btn">手动选择地址</Button>
+              <Button
+                className="enter-address-btn"
+                onClick={this.handleSelectCity}
+              >
+                手动选择地址
+              </Button>
             </View>
           )}
         </View>

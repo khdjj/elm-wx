@@ -13,7 +13,7 @@ async function getAuthorzation(url, callback) {
   if (url.indexOf("bindAccount") !== -1 || url.indexOf("getCode") !== -1) {
     callback({
       Accept: "application/json",
-      "content-type": "application/json",
+      "content-type": "application/json"
     });
   } else {
     try {
@@ -32,6 +32,7 @@ async function getAuthorzation(url, callback) {
 }
 
 const http = function(url, method, data, header) {
+  console.error(url, method, data);
   method = method.toUpperCase() || "GET";
   return new Promise((resolve, reject) => {
     getAuthorzation(url, header => {

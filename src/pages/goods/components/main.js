@@ -17,16 +17,13 @@ export default class Main extends Component {
     let { show } = this.store;
     this.store.show = !show;
   };
-
-
+  
   handleDrawerClick = e => {
   };
 
   render() {
     const { show, sort } = this.store;
-    const { shops = {} } = this.props;
-    const { items = [] } = shops;
-    console.error(items)
+    const { shops = [] } = this.props;
     return (
       <View className="page">
         <View className="home-filter">
@@ -54,8 +51,8 @@ export default class Main extends Component {
           items={sortTypes}
           onItemClick={this.handleDrawerClick}
         />
-        {items.map(shopItem => (
-          <ShopItem taroKey={shopItem.restaurant.id} items={shopItem} />
+        {shops.map(shopItem => (
+          <ShopItem taroKey={shopItem._id} items={shopItem} />
         ))}
       </View>
     );

@@ -79,6 +79,27 @@
 					"id": -1,
 					"name": "pages/address/new",
 					"pathName": "pages/address/new",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/address/selectOrderAddress",
+					"pathName": "pages/address/selectOrderAddress",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/address/select",
+					"pathName": "pages/address/select",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/address/city",
+					"pathName": "pages/address/city",
 					"scene": null
 				}
 			]

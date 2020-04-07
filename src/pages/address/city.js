@@ -17,6 +17,8 @@ Object.keys(Cities).forEach(item => {
   };
   city.push(d);
 });
+
+@inject("userStore")
 @observer
 export default class Index extends Component {
   config = {
@@ -29,11 +31,13 @@ export default class Index extends Component {
   };
 
   handleSelectCity = item => {
-    console.error(item.name);
+    const {userStore} = this.props
+    userStore.city = item.name
+    Taro.navigateBack();
   };
 
   handleSearch = debounce(value => {
-    if (!value) return;
+    if (!value) return this.store.data = [];
     const d = [];
     city.forEach(data => {
       const { items } = data;
@@ -61,7 +65,7 @@ export default class Index extends Component {
         {data.length > 0 ? (
           <View className="search_content">
             {data.map(item => (
-              <View className="search_item">{item.name}</View>
+              <View className="search_item" onClick={()=>this.handleSelectCity(item)}>{item.name}</View>
             ))}
           </View>
         ) : (

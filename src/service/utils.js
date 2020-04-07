@@ -99,7 +99,10 @@ function throttle(callback, duration) {
   };
 }
 
-function getImageUrl(url, food) {
+function getImageUrl(url, tag) {
+  if(tag && tag === 1){
+    return `http://localhost:8001/img/${url}`;
+  }
   if (Object.prototype.toString.call(url) !== "[object String]" || url == "") {
     return url;
   }
@@ -108,13 +111,15 @@ function getImageUrl(url, food) {
   const s2 = url.substring(1, 3);
   const s3 = url.substring(3, url.length);
   const s4 = reg.exec(url);
-  return `${s1}/${s2}/${s3}.${s4[1]}`;
+  const s5 =  `${s1}/${s2}/${s3}.${s4[1]}`;
+  return `https://cube.elemecdn.com/${s5}?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed`
 }
 
 function formatDistance(distance) {
-  if (typeof distance !== "number") return "";
-  const d1 = distance / 1000;
-  if (distance < 0) return `${d1}m`;
+  const d = Number(distance)
+  if (typeof d !== "number") return "";
+  const d1 = d / 1000;
+  if (d < 0) return `${d1}m`;
   else return `${d1.toFixed(2)}km`;
 }
 
@@ -154,6 +159,34 @@ function floatSub(arg1, arg2) {
   return ((arg1 * m - arg2 * m) / m).toFixed(n);
 }
 
+
+
+
+function rad(d)
+{
+   return d * Math.PI / 180.0;
+}
+
+const EARTH_RADIUS = 6378.137
+function computeDistance(lat1, lng1,  lat2,  lng2)
+{
+   const radLat1 = rad(lat1);
+   const radLat2 = rad(lat2);
+   const a = radLat1 - radLat2;
+   const b = rad(lng1) - rad(lng2);
+
+   let s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
+    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
+   s = s * EARTH_RADIUS;
+   s = Math.round(s * 10000) / 10000;
+   return s*1000;
+}
+
+function getDistance( ll1, ll2){
+    return computeDistance(ll1.latitude, ll1.longitude, ll2.latitude, ll2.longitude);
+}
+
+
 module.exports = {
   showErrorAndRelaunch,
   showError,
@@ -166,5 +199,6 @@ module.exports = {
   getImageUrl,
   floatAdd,
   floatSub,
-  formatDistance
+  formatDistance,
+  getDistance
 };

@@ -17,7 +17,7 @@ class App extends Component {
     subPackages: [
       {
         root: "pages/goods",
-        pages: ["index"]
+        pages: ["index","searchFood"]
       },
       {
         root: "pages/home",
@@ -44,10 +44,10 @@ class App extends Component {
       navigationBarTextStyle: "black"
     },
     networkTimeout: {
-      request: 8000,
+      request: 10000,
       uploadFile: 20000
     },
-    onReachBottomDistance: 50
+    onReachBottomDistance: 140
   };
 
   componentDidMount() {}

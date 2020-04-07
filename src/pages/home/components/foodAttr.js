@@ -10,7 +10,7 @@ import "./foodAttr.scss";
 @inject("shoppingCartStore", "restaurantStore")
 export default class FoodAttr extends Component {
   state = {
-    foodAttr: {}
+    foodAttr: {},
   };
 
   handleClose = () => {
@@ -24,7 +24,7 @@ export default class FoodAttr extends Component {
     const { foodAttr } = this.state;
     foodAttr[attr] = text;
     this.setState({
-      foodAttr
+      foodAttr,
     });
   };
 
@@ -33,12 +33,12 @@ export default class FoodAttr extends Component {
     const {
       food = {},
       shoppingCartStore: sStore,
-      restaurantStore: rStore
+      restaurantStore: rStore,
     } = this.props;
     food.select = foodAttr;
     sStore.saveShopingCart({
       food,
-      minimunAmount: rStore.float_minimum_order_amount
+      minimunAmount: rStore.float_minimum_order_amount,
     });
     this.handleClose();
   };
@@ -52,12 +52,7 @@ export default class FoodAttr extends Component {
         <View className="specpanel_main">
           <View className="specpanel_header">
             <View className="image">
-              <Image
-                src={`https://cube.elemecdn.com/${getImageUrl(
-                  food.image_path,
-                  food
-                )}?x-oss-process=image/format,webp/resize,w_686`}
-              />
+              <Image src={getImageUrl(food.image_path, food)} />
             </View>
             <View className="specpanel_info">
               <Text className="specpanel_name">{food.name}</Text>
@@ -65,11 +60,11 @@ export default class FoodAttr extends Component {
             </View>
           </View>
           <View className="specpanel_body">
-            {attrs.map(attr => (
+            {attrs.map((attr) => (
               <View>
                 <Text className="specpanel_colTitle">{attr.name}</Text>
                 <View className="specpanel_colBody">
-                  {attr.values.map(text => (
+                  {attr.values.map((text) => (
                     <Text
                       className={
                         foodAttr[attr.name] === text

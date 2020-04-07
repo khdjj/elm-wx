@@ -36,22 +36,16 @@ export default class Index extends Component {
     shoppingCart: [],
     rst: [],
     arriveTime: "",
-    order: {},
-    userAddress: {}
+    order: {}
   };
 
   componentDidMount() {
-    const {
-      shoppingCartStore: sStore,
-      restaurantStore: rStore,
-      orderStore: oStore,
-      userStore: uStore
-    } = this.props;
+    const { shoppingCartStore: sStore, restaurantStore: rStore } = this.props;
     this.store.shoppingCart = sStore;
     this.store.rst = rStore.currentRestraurant;
-    this.store.order = oStore.order;
-    this.store.userAddress = uStore.defaultAddress;
-    this.store.arriveTime = `${moment().add(40,'minutes').format('HH:mm')}`;
+    this.store.arriveTime = `${moment()
+      .add(40, "minutes")
+      .format("HH:mm")}`;
   }
 
   handleWayChange = value => {
@@ -67,13 +61,7 @@ export default class Index extends Component {
 
   toRemark = () => {
     const { orderStore } = this.props;
-    const {
-      arriveTime,
-      tableNumber,
-      selectorChecked,
-      way,
-      userAddress
-    } = this.store;
+    const { arriveTime, tableNumber, selectorChecked, way } = this.store;
     orderStore.saveOrder({
       arriveTime,
       tableNumber,
@@ -92,20 +80,86 @@ export default class Index extends Component {
     Taro.navigateTo({ url: "/pages/address/selectOrderAddress" });
   };
 
+  handleToPay = async () => {
+    const {
+      userStore: uStore,
+      orderStore: oStore,
+      shoppingCartStore: sStore,
+      restaurantStore: rStore
+    } = this.props;
+    const userAddress = uStore.defaultAddress;
+    const { way, tableNumber, arriveTime, selectorChecked } = this.store;
+    const { foodItem = [], price } = sStore;
+    let errorText = "";
+    if (way === "1" && !tableNumber) {
+      errorText = "请输入桌号";
+    } else if (Object.keys(userAddress).length <= 0) {
+      errorText = "请输入送达地址";
+    }
+    if (errorText) {
+      Taro.showToast({
+        title: errorText,
+        duration: 5000
+      });
+      return;
+    }
+    const { image_path, name, id ,latitude,longitude} = rStore.currentRestraurant;
+    console.error("oStore", toJS(oStore));
+    try {
+      Taro.showLoading();
+      const doc = await oStore.saveUserOrder({
+        address: userAddress,
+        arriveTime,
+        way,
+        tableNumber,
+        tableware: tableware[selectorChecked],
+        remark: oStore.remark,
+        food: foodItem,
+        money: price,
+        restaurant: {
+          image_path,
+          name,
+          latitude,
+          longitude,
+          id
+        },
+        creatAt: new Date()
+      });
+      if (doc.error) {
+        Taro.showModal({
+          title: "错误",
+          content: doc.msg
+        });
+        return;
+      } else {
+        Taro.showToast({
+          title: "支付成功",
+          icon: "success",
+          duration: 5000
+        });
+        Taro.navigateTo({ url: "/pages/goods/index" });
+      }
+    } catch (e) {
+    } finally {
+      Taro.hideLoading();
+    }
+  };
+
   render() {
+    const { userStore: uStore, orderStore: oStore } = this.props;
     const {
       way,
       selectorChecked,
       tableNumber,
       shoppingCart,
       rst,
-      arriveTime,
-      order,
-      userAddress = {}
+      arriveTime
     } = this.store;
+    const order = oStore.order;
+    const userAddress = uStore.defaultAddress;
     const { address = {} } = userAddress;
     const { foodItem = [], price } = shoppingCart;
-    console.error(arriveTime)
+    console.error(arriveTime);
     return (
       <View className="page">
         <View className="order-content">
@@ -170,7 +224,6 @@ export default class Index extends Component {
                     className="cart_image"
                     src={`https://cube.elemecdn.com/${getImageUrl(
                       food.image_path,
-                      food
                     )}?x-oss-process=image/format,webp/resize,w_686`}
                   />
                   <Text className="cart_rname">{food.name}</Text>
@@ -228,7 +281,9 @@ export default class Index extends Component {
         </View>
         <View className="footer">
           <Text className="price">¥{price}</Text>
-          <Button className="topay">去支付</Button>
+          <Button className="topay" onClick={this.handleToPay}>
+            去支付
+          </Button>
         </View>
       </View>
     );

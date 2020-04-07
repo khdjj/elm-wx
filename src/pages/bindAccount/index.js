@@ -75,6 +75,7 @@ export default class Index extends Taro.Component {
     const { mobile, code } = this.store;
     const { userStore: store } = this.props;
     setLocalItem("userInfo", data.userInfo);
+    store.saveUserInfo(data.userInfo);
     Taro.showLoading();
     try {
       const doc = await store.bindAccount(mobile, code);

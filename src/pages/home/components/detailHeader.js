@@ -15,7 +15,7 @@ export default class DetailHeader extends Component {
   @observable store = {
     curtainIsOpened: false,
     floatLayoutIsOpened: false,
-    isOpened: false
+    isOpened: false,
   };
 
   onSearch = () => {};
@@ -49,19 +49,11 @@ export default class DetailHeader extends Component {
       <View>
         <View className="headerBanner">
           <View className="nav_image">
-            <Image
-              src={`https://cube.elemecdn.com/${getImageUrl(
-                shop_sign.image_hash
-              )}?x-oss-process=image/format,webp/resize,w_686`}
-            />
+            <Image src={getImageUrl(shop_sign.image_hash, rst.tag)} />
           </View>
           <View className="shop_detail">
             <View className="shop_logo">
-              <Image
-                src={`https://cube.elemecdn.com/${getImageUrl(
-                  rst.image_path
-                )}?x-oss-process=image/format,webp/resize,w_130,h_130,m_fixed`}
-              />
+              <Image src={getImageUrl(rst.image_path,rst.tag)} />
             </View>
             {/* 店名及详情 */}
             <View className="shop_name">
@@ -172,7 +164,8 @@ export default class DetailHeader extends Component {
           title="已选商品"
           onClose={this.handleClose.bind(this)}
         >
-          {foodItem.length > 0 && foodItem.map(f => <CartFoodItem food={f} />)}
+          {foodItem.length > 0 &&
+            foodItem.map((f) => <CartFoodItem food={f} />)}
         </AtFloatLayout>
       </View>
     );

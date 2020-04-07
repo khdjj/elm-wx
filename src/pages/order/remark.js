@@ -25,7 +25,7 @@ export default class Index extends Component {
     const { remark } = this.store;
     const { orderStore } = this.props;
     orderStore.saveOrder({ remark });
-    Taro.navigateTo({ url: "/pages/order/confirmOrder" });
+    Taro.navigateBack();
   };
 
   render() {

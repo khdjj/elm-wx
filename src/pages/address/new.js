@@ -22,8 +22,18 @@ export default class Index extends Component {
     houseNumber: "",
     tag: "",
     sex: "",
-    location: {}
+    location: {},
+    // currentAddress: {}
   };
+
+  componentDidMount() {
+    const { userStore: uStore } = this.props;
+    const { currentAddress = {} } = uStore;
+    const {address} = currentAddress;
+    this.store = {...currentAddress}
+    this.store.location = address;
+    this.store.address = address.name
+  }
 
   handleSearchAddress = () => {
     Taro.navigateTo({ url: "/pages/address/search" });
@@ -50,26 +60,43 @@ export default class Index extends Component {
   };
 
   handleSaveAddress = async () => {
+    const { id } = this.$router.params;
     const { name, phone, houseNumber, tag, sex, location } = this.store;
     const { userStore: uStore } = this.props;
-    console.error(toJS(this.store));
+    const data = {
+      name,
+      phone,
+      houseNumber,
+      tag,
+      sex,
+      address: location
+    };
+    console.error(id);
     try {
-      const doc = await uStore.saveCurrentAddress({
-        name,
-        phone,
-        houseNumber,
-        tag,
-        sex,
-        address: location
-      });
-      console.error(doc)
+      let doc ;
+      if (!id) {
+        doc = await uStore.saveCurrentAddressAndSend({
+          ...data
+        });
+      }else {
+        doc = await uStore.editUserAddress({
+          ...data,
+          id
+        });
+      }
+
       if (doc.error) {
         Taro.showModal({
           title: "错误提示",
           content: doc.error
         });
       } else {
-        
+        Taro.showToast({
+          title:'保存成功',
+          icon:'success',
+          duration:2000
+        })
+        Taro.navigateBack();
       }
     } catch (e) {
       console.error(e);
@@ -77,7 +104,14 @@ export default class Index extends Component {
   };
 
   render() {
-    const { name, phone, address, houseNumber, tag, sex } = this.store;
+    const {
+      name,
+      phone,
+      address,
+      houseNumber,
+      tag,
+      sex,
+    } = this.store;
     return (
       <View className="page">
         <AtInput
