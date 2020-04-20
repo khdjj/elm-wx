@@ -1,7 +1,8 @@
 let config = {
   development: {
     log_level: 'debug',
-    api: 'https://api.wyb.d.yilisafe.com',
+    api: 'http://localhost:8001/',
+    upload:'http://localhost:8001/img',
     web: 'https://www.wyb.d.yilisafe.com',
     logapi: 'https://wyb.cn-shenzhen.log.aliyuncs.com/logstores/dev/track?APIVersion=0.6.0'
   },

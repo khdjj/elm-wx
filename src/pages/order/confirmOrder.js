@@ -19,14 +19,14 @@ const tableware = [
   "8份",
   "9份",
   "10份",
-  "10份以上"
+  "10份以上",
 ];
 
 @inject("shoppingCartStore", "restaurantStore", "orderStore", "userStore")
 @observer
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: "确认订单"
+    navigationBarTitleText: "确认订单",
   };
 
   @observable store = {
@@ -36,26 +36,24 @@ export default class Index extends Component {
     shoppingCart: [],
     rst: [],
     arriveTime: "",
-    order: {}
+    order: {},
   };
 
   componentDidMount() {
     const { shoppingCartStore: sStore, restaurantStore: rStore } = this.props;
     this.store.shoppingCart = sStore;
     this.store.rst = rStore.currentRestraurant;
-    this.store.arriveTime = `${moment()
-      .add(40, "minutes")
-      .format("HH:mm")}`;
+    this.store.arriveTime = `${moment().add(40, "minutes").format("HH:mm")}`;
   }
 
-  handleWayChange = value => {
+  handleWayChange = (value) => {
     this.store.way = value;
   };
 
-  onArriveTimeChange = e => {
+  onArriveTimeChange = (e) => {
     this.store.arriveTime = e.detail.value;
   };
-  handleTableNumberChange = value => {
+  handleTableNumberChange = (value) => {
     this.store.tableNumber = value;
   };
 
@@ -66,17 +64,17 @@ export default class Index extends Component {
       arriveTime,
       tableNumber,
       way,
-      tableware: selectorChecked
+      tableware: selectorChecked,
     });
     Taro.navigateTo({ url: "/pages/order/remark" });
   };
 
-  onTableWareChange = e => {
+  onTableWareChange = (e) => {
     console.error(e.detail.value);
     this.store.selectorChecked = e.detail.value;
   };
 
-  handleSelectAddress = e => {
+  handleSelectAddress = (e) => {
     Taro.navigateTo({ url: "/pages/address/selectOrderAddress" });
   };
 
@@ -85,7 +83,7 @@ export default class Index extends Component {
       userStore: uStore,
       orderStore: oStore,
       shoppingCartStore: sStore,
-      restaurantStore: rStore
+      restaurantStore: rStore,
     } = this.props;
     const userAddress = uStore.defaultAddress;
     const { way, tableNumber, arriveTime, selectorChecked } = this.store;
@@ -99,11 +97,18 @@ export default class Index extends Component {
     if (errorText) {
       Taro.showToast({
         title: errorText,
-        duration: 5000
+        duration: 5000,
       });
       return;
     }
-    const { image_path, name, id ,latitude,longitude} = rStore.currentRestraurant;
+    const {
+      image_path,
+      name,
+      _id,
+      latitude,
+      longitude,
+    } = rStore.currentRestraurant;
+    console.error(rStore.currentRestraurant);
     console.error("oStore", toJS(oStore));
     try {
       Taro.showLoading();
@@ -121,21 +126,21 @@ export default class Index extends Component {
           name,
           latitude,
           longitude,
-          id
+          id: _id,
         },
-        creatAt: new Date()
+        creatAt: new Date(),
       });
       if (doc.error) {
         Taro.showModal({
           title: "错误",
-          content: doc.msg
+          content: doc.msg,
         });
         return;
       } else {
         Taro.showToast({
           title: "支付成功",
           icon: "success",
-          duration: 5000
+          duration: 5000,
         });
         Taro.navigateTo({ url: "/pages/goods/index" });
       }
@@ -153,7 +158,7 @@ export default class Index extends Component {
       tableNumber,
       shoppingCart,
       rst,
-      arriveTime
+      arriveTime,
     } = this.store;
     const order = oStore.order;
     const userAddress = uStore.defaultAddress;
@@ -218,13 +223,11 @@ export default class Index extends Component {
           <View className="cart_group">
             <View className="cart_group1">{rst.name}</View>
             {foodItem.length > 0 &&
-              foodItem.map(food => (
+              foodItem.map((food) => (
                 <View className="cart_group2">
                   <Image
                     className="cart_image"
-                    src={`https://cube.elemecdn.com/${getImageUrl(
-                      food.image_path,
-                    )}?x-oss-process=image/format,webp/resize,w_686`}
+                    src={getImageUrl(food.image_path)}
                   />
                   <Text className="cart_rname">{food.name}</Text>
                   <Text className="cart_num">× {food.num}</Text>
@@ -236,7 +239,7 @@ export default class Index extends Component {
             <AtRadio
               options={[
                 { label: "在店内吃", value: "1", desc: "在店内吃需提供桌号" },
-                { label: "骑手运送", value: "2" }
+                { label: "骑手运送", value: "2" },
               ]}
               value={way || order.way}
               onClick={this.handleWayChange.bind(this)}

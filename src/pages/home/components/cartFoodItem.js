@@ -16,11 +16,8 @@ export default class cartFoodItem extends Component {
   };
 
   render() {
-    console.error("cartFoodItem");
     const { food = {} } = this.props;
     const { select = {} } = food;
-    console.error(toJS(food), food.name);
-    console.error(Object.values(select).join("/"));
     return (
       <View className="entityList_entityrow">
         <View className="entityList_entityname">

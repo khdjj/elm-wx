@@ -12,7 +12,7 @@ import "./foodItem.scss";
 @inject("shoppingCartStore", "restaurantStore")
 export default class FoodItem extends Component {
   @observable store = {
-    openFoodAttr: false
+    openFoodAttr: false,
   };
 
   handleOpenFoodAttr = () => {
@@ -20,18 +20,13 @@ export default class FoodItem extends Component {
     this.store.openFoodAttr = !openFoodAttr;
   };
 
-  handleAddFoodToCart = () => {
-    const {
-      food = {},
-      shoppingCartStore: sStore,
-      restaurantStore: rStore
-    } = this.props;
+  handleAddFoodToCart = (food) => {
+    const { shoppingCartStore: sStore, restaurantStore: rStore } = this.props;
     const { attrs = [] } = food;
-
     if (attrs.length === 0) {
       sStore.saveShopingCart({
         food,
-        minimunAmount: rStore.float_minimum_order_amount
+        minimunAmount: rStore.float_minimum_order_amount,
       });
     } else {
       this.handleOpenFoodAttr();
@@ -48,12 +43,7 @@ export default class FoodItem extends Component {
         <View className="menuitem">
           <View className="fooddetails">
             <View className="fooddetails_logo">
-              <Image
-                src={`https://cube.elemecdn.com/${getImageUrl(
-                  food.image_path,
-                  food
-                )}?x-oss-process=image/format,webp/resize,w_686`}
-              />
+              <Image src={getImageUrl(food.image_path)} />
             </View>
             <View className="fooddetails_info">
               <View className="fooddetails_name">
@@ -71,7 +61,7 @@ export default class FoodItem extends Component {
                     value="add-circle"
                     size="30"
                     color="#2396ff"
-                    onClick={this.handleAddFoodToCart}
+                    onClick={() => this.handleAddFoodToCart(food)}
                   ></AtIcon>
                 </View>
               </View>

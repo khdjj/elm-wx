@@ -21,24 +21,13 @@ export default class Index extends Component {
   async componentDidMount() {
     Taro.showLoading();
     try {
-      const { pageSize } = this.store;
-      const { restaurantStore: restStore, userStore } = this.props;
-      const { latitude, longitude } = userStore;
-      const doc = await restStore.getRestaurantDetail({
-        latitude: latitude,
-        longitude: longitude,
-        extras: [
-          "activities",
-          "albums",
-          "license",
-          "identification",
-          "qualification"
-        ]
-      });
-      const { rst = {}, menu = [] } = doc.ret;
+      const { restaurantStore: restStore } = this.props;
+      const name = this.$router.params;
+      const doc = await restStore.getRestaurantDetail(name);
+      const { rst = {}, menus = [] } = doc.ret;
       restStore.currentRestraurant = rst;
       this.store.rst = rst;
-      this.store.menu = menu;
+      this.store.menu = menus;
       Taro.setNavigationBarTitle({
         title: rst.name || ""
       });

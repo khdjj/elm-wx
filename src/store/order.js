@@ -9,29 +9,45 @@ const store = observable({
     arriveTime: "",
     tableNumber: "",
     tableware: "",
-    way: ""
+    way: "",
+    commendOrder: {},
   },
 
   async saveOrder(params) {
     this.order = {
       ...this.order,
-      ...params
+      ...params,
     };
   },
 
+  
+
   async saveUserOrder(params) {
     const doc = await request("/order/v1/saveUser", "POST", {
-      ...params
+      ...params,
     });
     return doc;
   },
 
-  async getOrderList(params){
-    const doc = await request("/order/v1/list","GET");
+  async getOrderList() {
+    const doc = await request("/order/v1/list", "GET");
     return doc;
-  }
+  },
 
+  async changeOrderStatus(id, status) {
+    const doc = await request("/order/v1/change/status", "POST", {
+      id,
+      status,
+    });
+    return doc;
+  },
 
+  async getOrderDetail(id) {
+    const doc = await request("/order/v1/detail", "GET", {
+      id,
+    });
+    return doc;
+  },
 });
 
 export default store;

@@ -29,7 +29,7 @@ class App extends Component {
       },
       {
         root: "pages/order",
-        pages: ["confirmOrder", "remark"]
+        pages: ["confirmOrder", "remark","detail","commend"]
       }
     ],
     permission: {

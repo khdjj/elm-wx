@@ -8,15 +8,20 @@ const store = observable({
   longitude: "",
   addressList: [],
   userInfo: {},
-  city:"",
-  selectAddress:{},
+  city: "",
+  selectAddress: {},
   currentAddress: {},
   defaultAddress: {},
 
-  async getUserInfo(user) {
+  async getUserInfo() {
+    const doc = await request("/user/getUserInfo", "GET");
+    return doc;
+  },
+
+  async getSso() {
     return new Promise((resolve, reject) => {
       try {
-        getLocalItem("userInfo").then((res) => {
+        getLocalItem("sso").then((res) => {
           resolve(res);
         });
       } catch (e) {
@@ -24,6 +29,7 @@ const store = observable({
       }
     });
   },
+
   async getCode(phone) {
     const doc = await request("/user/getCode", "POST", {
       phone,
@@ -35,6 +41,14 @@ const store = observable({
     const doc = await request("/user/bindAccount", "POST", {
       phone,
       code,
+    });
+    return doc;
+  },
+
+  async saveUserInfo(data) {
+    console.error(data);
+    const doc = await request("/user/saveUserInfo", "POST", {
+      weapp: data,
     });
     return doc;
   },
@@ -87,8 +101,8 @@ const store = observable({
     });
   },
 
-  async searchUserAddress(search,city) {
-    console.error(city,search)
+  async searchUserAddress(search, city) {
+    console.error(city, search);
     return new Promise((resolve, reject) => {
       Taro.request({
         url: "https://restapi.amap.com/v3/assistant/inputtips",

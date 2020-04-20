@@ -10,11 +10,11 @@ import "./order.scss";
 @observer
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: "我的订单"
+    navigationBarTitleText: "我的订单",
   };
 
   @observable store = {
-    orderList: []
+    orderList: [],
   };
 
   async componentDidMount() {
@@ -25,7 +25,7 @@ export default class Index extends Component {
       if (doc.error) {
         Taro.showToast({
           title: "错误,请刷新重试",
-          duration: 5000
+          duration: 5000,
         });
         return;
       }
@@ -37,27 +37,50 @@ export default class Index extends Component {
     }
   }
 
+  handleChangeOrderStatus = (id, status) => {
+    const { orderStore: oStore } = this.props;
+    oStore.changeOrderStatus(id, status).then((res) => {
+      console.error(res);
+    });
+  };
+
+  handleToDetail = (id) => {
+    Taro.navigateTo({ url: `/pages/order/detail?id=${id}` });
+  };
+
+  handleCommendOrder = (order) => {
+    const { _id } = order;
+    const { orderStore: oStore } = this.props;
+    oStore.saveOrder({ commendOrder: order });
+    Taro.navigateTo({ url: `/pages/order/commend` });
+  };
+
   render() {
     const { orderList = [] } = this.store;
-    console.error(toJS(orderList));
     return (
       <View className="page">
         <View className="ordercard">
           {orderList.length > 0 &&
-            orderList.map(order => (
+            orderList.map((order) => (
               <View className="ordercard-body">
                 <View className="ordercard-avatar">
                   <Image
-                    src={`https://cube.elemecdn.com/${getImageUrl(
-                      order.restaurant.image_path
-                    )}?x-oss-process=image/format,webp/resize,w_686`}
+                    src={getImageUrl(
+                      order.restaurant.image_path,
+                      order.restaurant
+                    )}
                   />
                 </View>
                 <View className="ordercard-content">
                   <View className="ordercard-head">
                     <View className="title">
                       <Text className="name">{order.restaurant.name}</Text>
-                      <Text className="status">订单已送达</Text>
+                      <Text
+                        className="status"
+                        onClick={() => this.handleToDetail(order._id)}
+                      >
+                        订单已送达
+                      </Text>
                     </View>
                     <Text className="datetime">{order.creatAt}</Text>
                   </View>
@@ -68,7 +91,40 @@ export default class Index extends Component {
                     <Text className="price">¥{order.money}</Text>
                   </View>
                   <View className="ordercard-bottom">
-                    <Button className="cardbutton">再来一单</Button>
+                    {order.status === 0 && (
+                      <View className="order-btnConent">
+                        <Button
+                          className="cardbutton"
+                          onClick={() =>
+                            this.handleChangeOrderStatus(order._id, -1)
+                          }
+                        >
+                          取消订单
+                        </Button>
+                        <Button
+                          className="cardbutton"
+                          onClick={() =>
+                            this.handleChangeOrderStatus(order._id, 1)
+                          }
+                        >
+                          完成订单
+                        </Button>
+                      </View>
+                    )}
+                    {order.status === -1 && (
+                      <Button className="cardbutton">订单已取消</Button>
+                    )}
+                    {order.status === 1 && (
+                      <View className="order-btnConent">
+                        <Button
+                          className="cardbutton"
+                          onClick={() => this.handleCommendOrder(order)}
+                        >
+                          评价此单
+                        </Button>
+                        <Button className="cardbutton">再来一单</Button>
+                      </View>
+                    )}
                   </View>
                 </View>
               </View>

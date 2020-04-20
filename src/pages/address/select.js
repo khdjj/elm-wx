@@ -25,7 +25,7 @@ export default class Index extends Component {
   componentDidMount() {
     const { userStore } = this.props;
     userStore.getUserInfo().then((res) => {
-      this.store.city = res.data.city;
+      this.store.city = res.ret.weapp.city;
     });
   }
 

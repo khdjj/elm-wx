@@ -26,6 +26,7 @@ async function getAuthorzation(url, callback) {
           });
       });
     } catch (e) {
+      Taro.navigateTo({url:'/pages/bindAccount/index'})
       console.error("error", e);
     }
   }

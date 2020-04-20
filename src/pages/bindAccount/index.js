@@ -11,7 +11,7 @@ import "./index.scss";
 @inject("userStore")
 export default class Index extends Taro.Component {
   config = {
-    navigationBarTitleText: "登录"
+    navigationBarTitleText: "登录",
   };
 
   @observable store = {
@@ -23,21 +23,21 @@ export default class Index extends Taro.Component {
     codeText: "获取验证码",
     get isValid() {
       return this.mobile && this.code;
-    }
+    },
   };
 
   onChange = (key, e) => {
     this.store[key] = e;
   };
 
-  getCode = async phone => {
+  getCode = async (phone) => {
     const { userStore: store } = this.props;
     try {
       const doc = await store.getCode(phone);
       if (doc.ret == 0) {
         Taro.showToast({
           title: doc.msg,
-          duration: 2000
+          duration: 2000,
         });
       }
     } catch (err) {
@@ -51,7 +51,7 @@ export default class Index extends Taro.Component {
     if (mobile == "" || !phoneisValid(mobile)) {
       Taro.showModal({
         content: "请输入正确的手机号",
-        showCancel: false
+        showCancel: false,
       });
       return;
     }
@@ -69,17 +69,18 @@ export default class Index extends Taro.Component {
     }, 1000);
   };
 
-  onGotUserInfo = async e => {
+  onGotUserInfo = async (e) => {
     const data = e.detail;
     if (!data.userInfo) return;
     const { mobile, code } = this.store;
     const { userStore: store } = this.props;
     setLocalItem("userInfo", data.userInfo);
-    store.saveUserInfo(data.userInfo);
     Taro.showLoading();
     try {
       const doc = await store.bindAccount(mobile, code);
-      const { error, data,token } = doc;
+      const { error, data: res, token } = doc;
+      setLocalItem("sso", res);
+      setLocalItem("token", token);
       if (error) {
         let errText = "";
         switch (doc.error) {
@@ -90,16 +91,16 @@ export default class Index extends Taro.Component {
             errText = "对不起，验证码已过期，请重试";
             break;
           default:
-            errText: "对不起，出现错误，请重试";
+            errText = "对不起，出现错误，请重试";
         }
         Taro.showModal({
           title: "错误提示",
-          content: errText
+          content: errText,
         });
         return;
+      } else {
+        store.saveUserInfo(data.userInfo);
       }
-      setLocalItem("sso", data);
-      setLocalItem("token",token)
       Taro.navigateTo({ url: "/pages/goods/index" });
     } catch (e) {
       console.error(e);

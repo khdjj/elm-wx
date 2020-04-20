@@ -30,7 +30,7 @@ export default class Index extends Component {
   @observable store = {
     address: {},
     shops: [],
-    search:"",
+    search: "",
     location: "",
     offset: 0,
     limit: 8,
@@ -55,20 +55,17 @@ export default class Index extends Component {
     return list;
   };
 
-  fetchRestList = async (
-    offset = 0,
-    limit = 8,
-  ) => {
+  fetchRestList = async (offset = 0, limit = 8) => {
     Taro.showLoading();
     try {
       const { restaurantStore: restStore, userStore } = this.props;
-      const { address,search } = this.store;
+      const { address, search } = this.store;
       const doc = await restStore.getRestaurant({
         offset,
         limit,
         search,
-        latitude: address.latitude,
-        longitude: address.longitude,
+        latitude: 23.119449 || address.latitude,
+        longitude: 113.308358 || address.longitude,
       });
       const restList = this.formatList(doc.ret);
       this.store.shops =

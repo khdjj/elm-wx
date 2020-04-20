@@ -100,6 +100,34 @@
 					"id": -1,
 					"name": "pages/address/city",
 					"pathName": "pages/address/city",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goods/searchFood",
+					"pathName": "pages/goods/searchFood",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/goods/index",
+					"pathName": "pages/goods/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order/detail",
+					"pathName": "pages/order/detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order/commend",
+					"pathName": "pages/order/commend",
 					"scene": null
 				}
 			]

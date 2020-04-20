@@ -11,7 +11,7 @@ const store = observable({
     const { food, minimunAmount = 0 } = data;
     const nFoodItem = [...this.foodItem];
     let nPrice = 0;
-    const index = nFoodItem.findIndex(f => f.item_id === food.item_id);
+    const index = nFoodItem.findIndex(f => f._id === food._id);
     if (index === -1) {
       nFoodItem.push({ ...food, num: 1, fprice: food.lowest_price });
     } else {
@@ -31,6 +31,7 @@ const store = observable({
     this.isAllowDelivery = nPrice > minimunAmount;
     this.difference = floatSub(nPrice, minimunAmount);
     console.error(
+      "aaaa",
       this.price,
       this.foodItem,
       this.isAllowDelivery,
@@ -42,7 +43,7 @@ const store = observable({
     let nPrice = this.price;
     if (type === "add") {
       this.foodItem.forEach(f => {
-        if (f.item_id === food.item_id) {
+        if (f._id === food._id) {
           f.num += 1;
           nPrice = floatAdd(nPrice, f.lowest_price);
           f.fprice = floatAdd(f.fprice, f.lowest_price);
@@ -50,7 +51,7 @@ const store = observable({
       });
     } else if (type === "delete") {
       this.foodItem.forEach((f, index) => {
-        if (f.item_id === food.item_id) {
+        if (f._id === food._id) {
           if (f.num === 1) {
             this.foodItem.splice(index, 1);
           } else {

@@ -68,16 +68,21 @@
         padding: 10px;
         height: 60px;
         width: 100%;
+        .order-btnConent {
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+        }
         .cardbutton {
-          position: absolute;
-          right: 20px;
           border: 1px solid #2395ff;
           outline: none;
           font-size: 28px;
           color: #2395ff;
-          margin-left: 20px;
           width: 200px;
           background-color: #fff;
+          margin: 0 10px;
+          float: right;
         }
       }
     }

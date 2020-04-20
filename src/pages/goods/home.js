@@ -33,8 +33,9 @@ export default class Home extends Component {
     }
   };
 
-  handleSelectCagetory = (value) => {
-    Taro.navigateTo({ url: `/pages/goods/searchFood?cagegory=${value}` });
+  handleSelectCagetory = (item) => {
+    console.error(item)
+    Taro.navigateTo({ url: `/pages/goods/searchFood?category=${item.value}` });
   };
 
   handleSelectCity = () => {

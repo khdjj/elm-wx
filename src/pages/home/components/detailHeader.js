@@ -4,19 +4,29 @@ import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import CartFoodItem from "./cartFoodItem";
 import shopBg from "@/images/banner.jpg";
-import { getImageUrl, formatDistance } from "@/service/utils";
+import { getImageUrl, formatDistance, getDistance } from "@/service/utils";
 import { AtCurtain, AtFloatLayout, AtIcon } from "taro-ui";
 
 import "./detailHeader.scss";
 
-@inject("shoppingCartStore")
+@inject("shoppingCartStore", "userStore")
 @observer
 export default class DetailHeader extends Component {
   @observable store = {
     curtainIsOpened: false,
     floatLayoutIsOpened: false,
     isOpened: false,
+    distance: 0,
   };
+
+  componentDidMount() {
+    const { rst = {}, userStore } = this.props;
+    const address = userStore.selectAddress;
+    this.store.distance = getDistance(
+      { longitude: address.longitude, latitude: address.latitude },
+      { longitude: rst.longitude, latitude: rst.latitude }
+    );
+  }
 
   onSearch = () => {};
 
@@ -40,7 +50,7 @@ export default class DetailHeader extends Component {
   };
 
   render() {
-    const { curtainIsOpened, floatLayoutIsOpened, isOpened } = this.store;
+    const { curtainIsOpened, isOpened, distance } = this.store;
     const { rst = {} } = this.props;
     const { shoppingCartStore: sStore } = this.props;
     const { foodItem, price, isAllowDelivery, difference } = sStore;
@@ -53,7 +63,7 @@ export default class DetailHeader extends Component {
           </View>
           <View className="shop_detail">
             <View className="shop_logo">
-              <Image src={getImageUrl(rst.image_path,rst.tag)} />
+              <Image src={getImageUrl(rst.image_path, rst.tag)} />
             </View>
             {/* 店名及详情 */}
             <View className="shop_name">
@@ -61,29 +71,14 @@ export default class DetailHeader extends Component {
                 {rst.name}
               </Text>
               <View className="introduction">
-                <Text>评价:{rst.rating}</Text>
-                <Text>月售:{rst.recent_order_num}单</Text>
+                <Text>评价:{rst.rating || 5} </Text>
+                <Text>月售:{rst.recent_order_num || 0}单</Text>
                 <Text>
                   商家配送:<Text>约{rst.order_lead_time}分钟</Text>
                 </Text>
               </View>
             </View>
-            {/* 红包 */}
-            {/* <View style="display:flex;flex-direction:row">
-              <View className="welfare">
-                <Text className="detail">
-                  共<Text className="money">￥32</Text>
-                  <Text className="get_money">领取</Text>
-                </Text>
-              </View>
-              {/* 优惠 */}
-            {/* <View className="discount" onClick={this.handleOpenFloatLayout}>
-                查看优惠
-              </View>
-            </View> * */}
           </View>
-
-          {/* 幕帘 */}
           <AtCurtain
             isOpened={curtainIsOpened}
             onClose={this.handleOpenCurtain}
@@ -92,11 +87,13 @@ export default class DetailHeader extends Component {
               <Text className="shop_name">{rst.name}</Text>
               <View className="detail">
                 <View className="item">
-                  <Text className="item_value">{rst.rating}</Text>
+                  <Text className="item_value">{rst.rating || 5}</Text>
                   <Text className="item_label">评分</Text>
                 </View>
                 <View className="item">
-                  <Text className="item_value">{rst.recent_order_num}单</Text>
+                  <Text className="item_value">
+                    {rst.recent_order_num || 0}单
+                  </Text>
                   <Text className="item_label">月售</Text>
                 </View>
                 <View className="item">
@@ -110,9 +107,7 @@ export default class DetailHeader extends Component {
                   <Text className="item_label">配送费</Text>
                 </View>
                 <View className="item">
-                  <Text className="item_value">
-                    {formatDistance(rst.distance)}
-                  </Text>
+                  <Text className="item_value">{formatDistance(distance)}</Text>
                   <Text className="item_label">距离</Text>
                 </View>
               </View>

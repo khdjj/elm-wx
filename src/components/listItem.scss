@@ -1,0 +1,55 @@
+@import "../style/variables/default.scss";
+@import "../style/mixins/index.scss";
+
+// 保持list和input风格一致，都居左显示
+.at-list {
+  &__item {
+
+    &-container {
+      align-items: flex-start;
+    }
+
+    &--thumb {
+      .item-thumb {
+        &__info {
+          width: $at-list-thumb-size;
+          height: $at-list-thumb-size;
+        }
+      }
+    }
+
+    .item-extra--form {
+      flex: auto;
+      text-align: left;
+    }
+
+    .item-extra {
+      &__info--wrap {
+        white-space: normal;
+      }
+    }
+
+    .item-content {
+      &__info {
+
+        &-title--form {
+          width: 200px;
+        }
+
+        &-title--wrap {
+          white-space: normal;
+          line-height: $line-height-zh;
+        }
+      }
+    }
+  }
+
+  &__item-extra {
+    max-width: 500px;
+  }
+
+  &__item-content--form {
+    flex: none;
+    margin-right: $spacing-h-md;
+  }
+}

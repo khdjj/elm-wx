@@ -10,21 +10,18 @@ import "./shopItem.scss";
 @observer
 export default class ShopItem extends Component {
   @observable store = {};
-  handleToDetail = rst => {
-    Taro.navigateTo({ url: `/pages/home/detail?id=${299}` });
+  handleToDetail = (rst) => {
+    Taro.navigateTo({ url: `/pages/home/detail?name=${rst.name}` });
   };
   render() {
     const { items = {} } = this.props;
     return (
-      <View
-        className="shop-item"
-        onClick={() => this.handleToDetail(items)}
-      >
+      <View className="shop-item" onClick={() => this.handleToDetail(items)}>
         <View className="shop-info">
           <View className="shop-logo">
             <Image
               className="shop-logo-img"
-              src={getImageUrl(items.image_path,items.tag)}
+              src={getImageUrl(items.image_path, items.tag)}
             />
           </View>
           <View className="shop-main">

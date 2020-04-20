@@ -5,17 +5,18 @@ const store = observable({
   currentRestraurant: {},
   async getRestaurant(params) {
     const doc = await request("/restapi/shopping/v3/restaurants", "POST", {
-      ...params
+      ...params,
     });
     return doc;
   },
-  async getRestaurantDetail(params) {
-    console.error("getRestaurantDetail", params);
-    const doc = await request("/restapi/shopping/detail/restaurants", "POST", {
-      ...params
-    });
+  async getRestaurantDetail(name) {
+    const doc = await request(
+      "/restapi/shopping/detail/restaurants",
+      "GET",
+      name
+    );
     return doc;
-  }
+  },
 });
 
 export default store;
