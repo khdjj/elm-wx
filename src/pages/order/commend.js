@@ -1,20 +1,14 @@
 import Taro, { Component } from "@tarojs/taro";
-import {
-  View,
-  Text,
-  Image,
-  Button,
-  Picker,
-  Textarea,
-} from "@tarojs/components";
+import { View, Text, Image, Button, Textarea } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
-import { AtRate, AtList, AtListItem } from "taro-ui";
+import { AtRate, AtList, AtListItem, AtImagePicker } from "taro-ui";
 import { getImageUrl } from "@/service/utils";
 
 import "./commend.scss";
+import "./confirmOrder.scss";
 
-@inject("orderStore")
+@inject("orderStore", "globalStore", "commendStore")
 @observer
 export default class Detail extends Component {
   config = {
@@ -24,27 +18,64 @@ export default class Detail extends Component {
   @observable store = {
     order: {},
     rate: 0,
-    rateText:'',
+    rateText: "",
+    files: [],
+    rateImages: [],
   };
 
   componentDidMount() {
     const { orderStore: oStore } = this.props;
     const { order = {} } = oStore;
     const { commendOrder } = order;
-    console.error(commendOrder);
     this.store.order = commendOrder;
   }
 
-  handleRateTextChange = (e)=>{
-      this.store.rateText = e.detail.value
-  }
+  handleRateTextChange = (e) => {
+    this.store.rateText = e.detail.value;
+  };
+
+  onhaneleRateImagesChange = (data = []) => {
+    const { globalStore: gStore } = this.props;
+    const { rateImages } = this.store;
+    const promiseArr = [];
+    data.forEach((f) => {
+      promiseArr.push(gStore.uploadFile(f.file.path));
+    });
+    Promise.all(promiseArr).then((result) => {
+      result.forEach((r) => {
+        rateImages.push(r.imgPath);
+      });
+      this.store.rateImages = rateImages;
+      this.store.files = data;
+    });
+  };
 
   handleRageChange = (value) => {
     this.store.rate = value;
   };
 
+  handleSubmitCommend = () => {
+    const { globalStore: gStore, commendStore: cStore } = this.props;
+    const { order, rateImages, rateText, rate } = this.store;
+    cStore
+      .saveCommend({
+        rating: rate,
+        rated_at: new Date(),
+        raging_images: rateImages,
+        rating_text: rateText,
+        food: order.food,
+        orderId: order._id,
+        rstId: order.restaurant.id,
+      })
+      .then((res) => {
+        if (!res.error) {
+          Taro.navigateTo({ url: "/pages/goods/index" });
+        }
+      });
+  };
+
   render() {
-    const { rate, order } = this.store;
+    const { rate, order, files = [] } = this.store;
     const { food = [], restaurant = {} } = order;
     return (
       <View className="page">
@@ -73,6 +104,16 @@ export default class Detail extends Component {
           placeholder="请输入评价"
           onInput={(e) => this.handleRateTextChange(e)}
         ></Textarea>
+        <View className="title">您要上传评论图片吗</View>
+        <AtImagePicker
+          files={files}
+          length={5}
+          multiple
+          onChange={this.onhaneleRateImagesChange}
+        />
+        <Button className="submit" onClick={this.handleSubmitCommend}>
+          提交评价
+        </Button>
       </View>
     );
   }

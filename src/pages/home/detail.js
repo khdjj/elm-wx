@@ -5,6 +5,8 @@ import { observer, inject } from "@tarojs/mobx";
 import { AtTabBar } from "taro-ui";
 import DetailHeader from "./components/detailHeader";
 import MenuDetail from "./components/menuDetail";
+import Commend from "./components/commend";
+import Message from "./components/message";
 import "./detail.scss";
 
 const tabList = [{ title: "点餐" }, { title: "评价" }, { title: "商家" }];
@@ -29,7 +31,7 @@ export default class Index extends Component {
       this.store.rst = rst;
       this.store.menu = menus;
       Taro.setNavigationBarTitle({
-        title: rst.name || ""
+        title: rst.name || "",
       });
     } catch (err) {
     } finally {
@@ -39,29 +41,20 @@ export default class Index extends Component {
 
   onSearch = () => {};
 
-  handleTabClick = current => {
+  handleTabClick = (current) => {
     this.store.current = current;
   };
 
   render() {
     const { current, menu = [], rst } = this.store;
+    console.error(rst);
     return (
       <View className="page">
         <DetailHeader rst={rst} />
         <View className="page">
-          {current === 0 && menu.length > 0 && (
-            <MenuDetail menu={menu} />
-          )}
-          {current === 1 && (
-            <View style="padding: 100px 50px;background-color: #FAFBFC;text-align: center;">
-              标签页二的内容
-            </View>
-          )}
-          {current === 2 && (
-            <View style="padding: 100px 50px;background-color: #FAFBFC;text-align: center;">
-              标签页三的内容
-            </View>
-          )}
+          {current === 0 && menu.length > 0 && <MenuDetail menu={menu} />}
+          {current === 1 && <Commend restaurant={rst} />}
+          {current === 2 && <Message restaurant={rst} />}
           <AtTabBar
             tabList={tabList}
             onClick={this.handleTabClick.bind(this)}
