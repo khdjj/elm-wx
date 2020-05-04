@@ -1,53 +1,47 @@
-import meishiImg from "@/images/meishi.webp";
-import yexiaoImg from "@/images/yexiao.webp";
-import paotuiImg from "@/images/paotui.webp";
-import hanbaoImg from "@/images/hanbao.webp";
+import yimianImg from "@/images/yimian.jpg";
+import xianhuaImg from "@/images/xianhua.jpg";
+import guoshuImg from "@/images/guoshu.jpg";
+import xiaochiImg from "@/images/nuosifen.jpg";
+import kuaicanImg from "@/images/kuaican.jpg";
 import sushijiancanImg from "@/images/sushijiancan.webp";
-import difaxiaochiImg from "@/images/difaxiaochi.webp";
-import dapaihuichiImg from "@/images/dapaihuichi.webp";
-import sushiImg from "@/images/sushi.webp";
+import tianpinImg from "@/images/tianpin.jpg";
 
 const bannerTypes = [
   {
-    image: meishiImg,
-    value: "美食",
-    url: ""
+    image: yimianImg,
+    value: "异国料理",
+    url: "",
   },
   {
-    image: yexiaoImg,
-    value: "夜宵",
-    url: ""
+    image: kuaicanImg,
+    value: "快餐便当",
+    url: "",
   },
   {
-    image: paotuiImg,
-    value: "跑腿代购",
-    url: ""
+    image: xiaochiImg,
+    value: "小吃夜宵",
+    url: "",
   },
   {
-    image: hanbaoImg,
-    value: "汉堡披萨",
-    url: ""
+    image: guoshuImg,
+    value: "果蔬生鲜",
+    url: "",
   },
   {
     image: sushijiancanImg,
-    value: "速食简餐",
-    url: ""
+    value: "特色菜系",
+    url: "",
   },
   {
-    image: difaxiaochiImg,
-    value: "地方小吃",
-    url: ""
+    image: xianhuaImg,
+    value: "鲜花蛋糕",
+    url: "",
   },
   {
-    image: dapaihuichiImg,
-    value: "大牌惠吃",
-    url: ""
+    image: tianpinImg,
+    value: "甜品饮品",
+    url: "",
   },
-  {
-    image: sushiImg,
-    value: "速食简餐",
-    url: ""
-  }
 ];
 
 export { bannerTypes };

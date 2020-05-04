@@ -5,6 +5,7 @@ import { observer, inject } from "@tarojs/mobx";
 import { AtIcon, AtSearchBar, AtGrid } from "taro-ui";
 import { bannerTypes } from "@/consts/banner";
 import pinzhitaocanImage from "@/images/pinzhitaocan.png";
+import NoMore from "@/components/noMore";
 import Main from "./components/main";
 
 import "./home.scss";
@@ -34,7 +35,7 @@ export default class Home extends Component {
   };
 
   handleSelectCagetory = (item) => {
-    console.error(item)
+    console.error(item);
     Taro.navigateTo({ url: `/pages/goods/searchFood?category=${item.value}` });
   };
 
@@ -42,9 +43,17 @@ export default class Home extends Component {
     Taro.navigateTo({ url: "/pages/address/select" });
   };
 
+  handleOnKeyChange = (key) => {
+    const { onKeyChange } = this.props;
+    if (onKeyChange) {
+      console.error("home", key);
+      onKeyChange(key);
+    }
+  };
+
   render() {
     const { search } = this.store;
-    const { shops = [], location } = this.props;
+    const { shops = [], location, noMore } = this.props;
     return (
       <View className="page">
         <View className="header">
@@ -75,10 +84,13 @@ export default class Home extends Component {
             columnNum={5}
             onClick={this.handleSelectCagetory}
           />
-          <Image src={pinzhitaocanImage} className="banner-image" />
+          {/* <Image src={pinzhitaocanImage} className="banner-image" /> */}
           <View className="shoplist-title">推荐商家</View>
           {shops.length > 0 ? (
-            <Main shops={shops} />
+            <View>
+              <Main shops={shops} onKeyChange={this.handleOnKeyChange} />
+              {noMore && <NoMore />}
+            </View>
           ) : (
             <View className="nodatatip-wrapper">
               <Image

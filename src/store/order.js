@@ -20,8 +20,6 @@ const store = observable({
     };
   },
 
-  
-
   async saveUserOrder(params) {
     const doc = await request("/order/v1/saveUser", "POST", {
       ...params,
@@ -29,8 +27,11 @@ const store = observable({
     return doc;
   },
 
-  async getOrderList() {
-    const doc = await request("/order/v1/list", "GET");
+  async getOrderList(offset, limit) {
+    const doc = await request("/order/v1/list", "GET",{
+      offset,
+      limit
+    });
     return doc;
   },
 

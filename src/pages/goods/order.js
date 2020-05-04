@@ -2,8 +2,8 @@ import Taro, { Component } from "@tarojs/taro";
 import { View, Text, Image, Button } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
-import { getImageUrl } from "@/service/utils";
-import { AtButton } from "taro-ui";
+import { getImageUrl, formatDate } from "@/service/utils";
+import NoMore from "@/components/noMore";
 import "./order.scss";
 
 @inject("orderStore")
@@ -17,26 +17,6 @@ export default class Index extends Component {
     orderList: [],
   };
 
-  async componentDidMount() {
-    const { orderStore: oStore } = this.props;
-    try {
-      Taro.showLoading();
-      const doc = await oStore.getOrderList();
-      if (doc.error) {
-        Taro.showToast({
-          title: "错误,请刷新重试",
-          duration: 5000,
-        });
-        return;
-      }
-      console.error(doc);
-      this.store.orderList = doc.ret;
-    } catch (e) {
-    } finally {
-      Taro.hideLoading();
-    }
-  }
-
   handleChangeOrderStatus = (id, status) => {
     const { orderStore: oStore } = this.props;
     oStore.changeOrderStatus(id, status).then((res) => {
@@ -48,6 +28,11 @@ export default class Index extends Component {
     Taro.navigateTo({ url: `/pages/order/detail?id=${id}` });
   };
 
+  handleToRestaurant = (rst) => {
+    const { name } = rst;
+    Taro.navigateTo({ url: `/pages/home/detail?name=${name}` });
+  };
+
   handleCommendOrder = (order) => {
     const { _id } = order;
     const { orderStore: oStore } = this.props;
@@ -56,7 +41,7 @@ export default class Index extends Component {
   };
 
   render() {
-    const { orderList = [] } = this.store;
+    const { orderList = [], noMore } = this.props;
     return (
       <View className="page">
         <View className="ordercard">
@@ -69,6 +54,7 @@ export default class Index extends Component {
                       order.restaurant.image_path,
                       order.restaurant
                     )}
+                    onClick={() => this.handleToRestaurant(order.restaurant)}
                   />
                 </View>
                 <View className="ordercard-content">
@@ -82,7 +68,9 @@ export default class Index extends Component {
                         订单已送达
                       </Text>
                     </View>
-                    <Text className="datetime">{order.creatAt}</Text>
+                    <Text className="datetime">
+                      {formatDate(order.creatAt)}
+                    </Text>
                   </View>
                   <View className="ordercard-detail">
                     <Text className="detail">
@@ -129,6 +117,7 @@ export default class Index extends Component {
                 </View>
               </View>
             ))}
+          {noMore && <NoMore />}
         </View>
       </View>
     );

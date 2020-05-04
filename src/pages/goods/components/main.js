@@ -10,48 +10,69 @@ import "./main.scss";
 @observer
 export default class Main extends Component {
   @observable store = {
-    show: false,
-    sort: "综合排序"
+    sort: "综合排序",
   };
-  handleSort = e => {
-    let { show } = this.store;
-    this.store.show = !show;
-  };
-  
-  handleDrawerClick = e => {
+  handleSort = (key, keyValue) => {
+    const { onKeyChange } = this.props;
+    this.store.sort = key;
+    if (onKeyChange) {
+      onKeyChange(keyValue);
+    }
   };
 
+  handleDrawerClick = (e) => {};
+
   render() {
-    const { show, sort } = this.store;
+    const { sort } = this.store;
     const { shops = [] } = this.props;
     return (
       <View className="page">
         <View className="home-filter">
           <View className="filter-item">
-            <Text className="item-title" onClick={this.handleSort}>
-              {sort}
+            <Text
+              className="item-title"
+              style={sort === "rating" ? { color: "blue" } : ""}
+              onClick={() => this.handleSort("rating", { rating: -1 })}
+            >
+              好评优先
             </Text>
-            <AtIcon value="chevron-down" size="15" color="#333"></AtIcon>
           </View>
           <View className="filter-item">
-            <Text>距离最近</Text>
+            <Text
+              onClick={() =>
+                this.handleSort("recent_order_num", { recent_order_num: -1 })
+              }
+              style={sort === "recent_order_num" ? { color: "blue" } : ""}
+            >
+              销量最高
+            </Text>
           </View>
           <View className="filter-item">
-            <Text>品质联盟</Text>
+            <Text
+              onClick={() =>
+                this.handleSort("order_lead_time", { order_lead_time: 1 })
+              }
+              style={sort === "order_lead_time" ? { color: "blue" } : ""}
+            >
+              配送最快
+            </Text>
           </View>
           <View className="filter-item">
-            <Text className="item-title">筛选</Text>
-            <AtIcon value="filter" size="15" color="#333"></AtIcon>
+            <Text
+              onClick={() =>
+                this.handleSort("float_minimum_order_amount", {
+                  float_minimum_order_amount: 1,
+                })
+              }
+              style={
+                sort === "float_minimum_order_amount" ? { color: "blue" } : ""
+              }
+            >
+              起送价最低
+            </Text>
           </View>
         </View>
-        <AtDrawer
-          show={show}
-          right
-          mask
-          items={sortTypes}
-          onItemClick={this.handleDrawerClick}
-        />
-        {shops.map(shopItem => (
+        {shops.map((shopItem) => (
           <ShopItem taroKey={shopItem._id} items={shopItem} />
         ))}
       </View>

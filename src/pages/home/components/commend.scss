@@ -1,0 +1,58 @@
+.business_rate {
+  display: flex;
+  padding: 68px 20px 20px 20px;
+  .rate_text {
+    font-size: 80px;
+    color: #ff6000;
+    padding: 10px 20px;
+  }
+  .rate_detail {
+    display: flex;
+    flex-direction: column;
+    font-size: 32px;
+    color: #333;
+    justify-content: center;
+    margin-left: 20px;
+  }
+}
+
+.comment {
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  .comment_avatar {
+    width: 75px;
+    height: 98px;
+  }
+  .comment_detail {
+    width: 80%;
+    font-size: 33px;
+    color: #333;
+    font-weight: 400;
+    margin-left: 20px;
+    .comment_user {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 28px;
+    }
+    .comment_text {
+      color: #333;
+      font-size: 28px;
+    }
+    .commentImages {
+      margin-top: 10px;
+      .images {
+        height: 200px;
+        width: 169px;
+        margin-top: 10px;
+      }
+    }
+  }
+  .reply{
+    background-color: #eee;
+    font-size: 30px;
+    padding: 10px;
+
+  }
+}

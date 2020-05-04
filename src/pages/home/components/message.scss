@@ -1,0 +1,29 @@
+.messageContent {
+  padding-top: 100px;
+  margin-bottom: 150px;
+  border-bottom: 2px solid #eee;
+
+  .cardConent {
+    background-color: #fff;
+    padding: 20px;
+    background-color: #fff;
+    border-bottom: 20px solid #eee;
+    border-top: 10px solid #eee;
+
+    .h3 {
+      color: #000;
+      font-weight: 500;
+      padding: 10px 0;
+    }
+  }
+}
+.desc {
+  padding: 20px 0;
+  color: #333;
+  font-size: 28px;
+  padding-left: 25px;
+}
+.images {
+  height: 150px;
+  width: 155px;
+}

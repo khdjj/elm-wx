@@ -198,6 +198,15 @@ function getDistance(ll1, ll2) {
   );
 }
 
+function formatDate(date) {
+  const d = new Date(date);
+  const y = d.getFullYear();
+  const m = d.getMonth() + 1;
+  const day = d.getDate();
+  const month = String(m).length == 2 ? m : '0' + m;
+  return `${y}/${month}/${day}`;
+}
+
 module.exports = {
   showErrorAndRelaunch,
   showError,
@@ -213,4 +222,5 @@ module.exports = {
   removeLocalItem,
   formatDistance,
   getDistance,
+  formatDate,
 };

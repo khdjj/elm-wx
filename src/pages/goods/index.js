@@ -16,7 +16,7 @@ const tabList = [
   { title: "我的", iconType: "user" },
 ];
 
-@inject("restaurantStore", "userStore")
+@inject("restaurantStore", "userStore", "orderStore")
 @observer
 export default class Index extends Component {
   config = {
@@ -35,6 +35,10 @@ export default class Index extends Component {
     offset: 0,
     limit: 8,
     rank_id: "",
+    rstNoMore: false,
+    orderNoMore: false,
+    key: "",
+    orderList: [],
   };
 
   onChange = () => {};
@@ -56,18 +60,21 @@ export default class Index extends Component {
   };
 
   fetchRestList = async (offset = 0, limit = 8) => {
-    Taro.showLoading();
     try {
-      const { restaurantStore: restStore, userStore } = this.props;
-      const { address, search } = this.store;
+      const { restaurantStore: restStore } = this.props;
+      const { address, search, rstNoMore, key } = this.store;
+      if (rstNoMore) return;
+      Taro.showLoading();
       const doc = await restStore.getRestaurant({
         offset,
         limit,
         search,
+        key,
         latitude: 23.119449 || address.latitude,
         longitude: 113.308358 || address.longitude,
       });
       const restList = this.formatList(doc.ret);
+      if (doc.ret.length === 0) this.store.rstNoMore = true;
       this.store.shops =
         offset === 0 ? restList : [...this.store.shops].concat(restList);
     } catch (e) {
@@ -116,13 +123,47 @@ export default class Index extends Component {
     if (current === 0) {
       this.fetchRestList(this.store.offset, limit);
     }
+    if (current === 1) {
+      this.fetchOrderList(this.store.offset, limit);
+    }
   }
+
+  fetchOrderList = async (offset = 0, limit = 8) => {
+    const { orderStore: oStore } = this.props;
+    const { orderNoMore,orderList } = this.store;
+    try {
+      if (orderNoMore) return;
+      Taro.showLoading();
+      const doc = await oStore.getOrderList(offset, limit);
+      if (doc.error) {
+        Taro.showToast({
+          title: "错误,请刷新重试",
+          duration: 5000,
+        });
+        return;
+      }
+      if (doc.ret.length === 0) this.store.orderNoMore = true;
+      const list = doc.ret;
+      this.store.orderList =
+      offset === 0 ? list : [...orderList].concat(list);
+    } catch (e) {
+    } finally {
+      Taro.hideLoading();
+    }
+  };
 
   handleClick = (current) => {
     const { title } = tabList[current];
     Taro.setNavigationBarTitle({
       title,
     });
+    if (current === 0) {
+      this.fetchRestList();
+    } else if (current === 1) {
+      this.store.offset = 0;
+      this.store.noMore = false;
+      this.fetchOrderList();
+    }
     this.setState({
       current,
     });
@@ -134,19 +175,34 @@ export default class Index extends Component {
     this.fetchRestList();
   };
 
+  handleKeyChange = (key) => {
+    this.store.offset = 0;
+    this.store.key = key;
+    this.fetchRestList();
+  };
+
   render() {
     const { current } = this.state;
-    const { shops, location } = this.store;
+    const {
+      shops,
+      location,
+      orderList = [],
+      orderNoMore = false,
+      rstNoMore,
+    } = this.store;
+    console.error(orderNoMore,rstNoMore)
     return (
       <View className="page">
         {current === 0 && (
           <Home
             shops={shops}
+            noMore={rstNoMore}
             location={location}
+            onKeyChange={this.handleKeyChange}
             onSearch={this.handleSearch}
           />
         )}
-        {current === 1 && <Order />}
+        {current === 1 && <Order orderList={orderList} noMore={orderNoMore} />}
         {current === 2 && <Me />}
         <AtTabBar
           fixed
