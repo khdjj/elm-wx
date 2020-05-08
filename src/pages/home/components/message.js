@@ -15,22 +15,23 @@ export default class Message extends Component {
 
   render() {
     const { restaurant = {} } = this.props;
-    const { qualification = [], posters = [], category = [] } = this.props;
-    console.error(restaurant);
+    const { qualification = [], albums = [], category = [] } = restaurant;
+    console.error(qualification);
+    console.error(albums.length, qualification.length);
     return (
       <View className="messageContent">
-        {posters.length > 0 && (
+        {albums.length > 0 && albums[0] && (
           <View className="cardConent">
             <View className="h3">商家实景</View>
             <View>
-              {posters.map((ps) => (
-                <Image src={userIcon} className="images" />
+              {albums.map((qualfy) => (
+                <Image src={getImageUrl(qualfy)} className="images" />
               ))}
             </View>
           </View>
         )}
 
-        {qualification.length > 0 && (
+        {qualification.length > 0 && qualification[0] && (
           <View className="cardConent">
             <View className="h3">营业资质</View>
             <View>

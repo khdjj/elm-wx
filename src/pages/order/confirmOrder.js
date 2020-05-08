@@ -103,6 +103,7 @@ export default class Index extends Component {
     }
     const {
       image_path,
+      recent_order_num,
       name,
       _id,
       latitude,
@@ -127,6 +128,7 @@ export default class Index extends Component {
           latitude,
           longitude,
           id: _id,
+          recent_order_num: recent_order_num || 0,
         },
         creatAt: new Date(),
       });

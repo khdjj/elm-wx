@@ -10,14 +10,14 @@ import "./selectOrderAddress.scss";
 @observer
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: "选择地址"
+    navigationBarTitleText: "选择地址",
   };
 
   @observable store = {
     addressList: [],
     selectAddressList: {},
     isOpened: false,
-    deleteAddress: {}
+    deleteAddress: {},
   };
 
   componentDidMount() {
@@ -25,6 +25,7 @@ export default class Index extends Component {
   }
 
   getAddressList = async () => {
+    Taro.showLoading();
     const { userStore: uStore } = this.props;
     try {
       const doc = await uStore.getUserAddress();
@@ -32,26 +33,31 @@ export default class Index extends Component {
       if (doc.error) {
         Taro.showModal({
           title: "错误",
-          content: doc.msg
+          content: doc.msg,
         });
         return;
       }
       this.store.addressList = doc.ret;
-    } catch (e) {}
+    } catch (e) {
+    } finally {
+      Taro.hideLoading();
+    }
   };
 
-  changeSelectAddress = ads => {
-    const {userStore:uStore} = this.props;
+  changeSelectAddress = (ads) => {
+    const { userStore: uStore } = this.props;
     this.store.selectAddressList = ads;
     uStore.defaultAddress = ads;
     Taro.navigateBack();
   };
 
   handleAddAddress = () => {
+    const { userStore: uStore } = this.props;
+    uStore.saveCurrentAddress({});
     Taro.navigateTo({ url: "/pages/address/new" });
   };
 
-  deleteAddress = ads => {
+  deleteAddress = (ads) => {
     this.store.deleteAddress = ads;
     this.store.isOpened = true;
   };
@@ -60,17 +66,22 @@ export default class Index extends Component {
     this.store.isOpened = false;
   };
 
+  componentDidShow(){
+    this.getAddressList();
+  }
+
+
   handleModalConfirm = async () => {
     const { userStore: uStore } = this.props;
     const { deleteAddress } = this.store;
     try {
       const doc = await uStore.deleteUserAddress({
-        id: deleteAddress._id
+        id: deleteAddress._id,
       });
       if (doc.error) {
         Taro.showModal({
           title: "错误",
-          content: doc.msg
+          content: doc.msg,
         });
         return;
       }
@@ -79,7 +90,7 @@ export default class Index extends Component {
     } catch (e) {}
   };
 
-  editAddress = ads => {
+  editAddress = (ads) => {
     const { _id } = ads;
     const { userStore: uStore = {} } = this.props;
     uStore.saveCurrentAddress(ads);
@@ -92,7 +103,7 @@ export default class Index extends Component {
       <View className="page">
         <View className="address">
           {addressList.length > 0 ? (
-            addressList.map(ads => (
+            addressList.map((ads) => (
               <View className="addresscard">
                 {ads._id === selectAddressList._id && (
                   <View className="addresscard_select">

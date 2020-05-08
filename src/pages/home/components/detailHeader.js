@@ -3,7 +3,6 @@ import { View, Text, Image } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import CartFoodItem from "./cartFoodItem";
-import shopBg from "@/images/banner.jpg";
 import { getImageUrl, formatDistance, getDistance } from "@/service/utils";
 import { AtCurtain, AtFloatLayout, AtIcon } from "taro-ui";
 
@@ -17,14 +16,19 @@ export default class DetailHeader extends Component {
     floatLayoutIsOpened: false,
     isOpened: false,
     distance: 0,
+    isAllowDelivery: false,
   };
 
-  componentDidMount() {
+  componentDidMount() {}
+
+  getShopDistance() {
     const { rst = {}, userStore } = this.props;
     const address = userStore.selectAddress;
-    this.store.distance = getDistance(
-      { longitude: address.longitude, latitude: address.latitude },
-      { longitude: rst.longitude, latitude: rst.latitude }
+    return formatDistance(
+      getDistance(
+        { longitude: address.longitude, latitude: address.latitude },
+        { longitude: rst.longitude, latitude: rst.latitude }
+      )
     );
   }
 
@@ -45,15 +49,26 @@ export default class DetailHeader extends Component {
     this.store.isOpened = !isOpened;
   };
 
+  getDifference = (price, minprice) => {
+    if (price <= 0) return minprice;
+    const diff = minprice - price;
+    if (diff < 0) {
+      this.store.isAllowDelivery = true;
+      return 0;
+    }
+    return diff;
+
+  };
+
   handletoPay = () => {
     Taro.navigateTo({ url: "/pages/order/confirmOrder" });
   };
 
   render() {
-    const { curtainIsOpened, isOpened, distance } = this.store;
+    const { curtainIsOpened, isOpened, isAllowDelivery } = this.store;
     const { rst = {} } = this.props;
     const { shoppingCartStore: sStore } = this.props;
-    const { foodItem, price, isAllowDelivery, difference } = sStore;
+    const { foodItem, price, visible } = sStore;
     const { shop_sign = {} } = rst;
     return (
       <View>
@@ -107,7 +122,7 @@ export default class DetailHeader extends Component {
                   <Text className="item_label">配送费</Text>
                 </View>
                 <View className="item">
-                  <Text className="item_value">{formatDistance(distance)}</Text>
+                  <Text className="item_value">{this.getShopDistance()}</Text>
                   <Text className="item_label">距离</Text>
                 </View>
               </View>
@@ -117,43 +132,35 @@ export default class DetailHeader extends Component {
               <Text className="notice_content">{rst.promotion_info}</Text>
             </View>
           </AtCurtain>
-
-          {/* <AtFloatLayout
-            isOpened={floatLayoutIsOpened}
-            title="优惠活动"
-            onClose={this.handleOpenFloatLayout.bind(this)}
-          >
-            <View className="activity_sheet">
-              <Text>
-                满25元减1元，满35元减5元，满62元减12元，满120元减28元，满300元减70元
-              </Text>
-              <Text>超级会员领6元无门槛红包</Text>
-            </View>
-            
-          </AtFloatLayout> */}
         </View>
-        <View className="footer">
-          <View className="shopping_icon">
-            {foodItem.length > 0 ? (
-              <AtIcon value="shopping-cart" size="40" color="#3190e8" />
+        {visible && (
+          <View className="footer">
+            <View className="shopping_icon">
+              {foodItem.length > 0 ? (
+                <AtIcon value="shopping-cart" size="40" color="#3190e8" />
+              ) : (
+                <AtIcon value="shopping-cart" size="40" color="#eee" />
+              )}
+            </View>
+            <Text
+              onClick={this.handleClose.bind(this)}
+              className="bottomNav_carttotal"
+            >
+              ¥{price}
+            </Text>
+            {isAllowDelivery ? (
+              <Button className="settlement_btn" onClick={this.handletoPay}>
+                去结算
+              </Button>
             ) : (
-              <AtIcon value="shopping-cart" size="40" color="#eee" />
+              <View className="submit_btn">
+                还差¥{this.getDifference(price, rst.float_minimum_order_amount)}
+                起送
+              </View>
             )}
           </View>
-          <Text
-            onClick={this.handleClose.bind(this)}
-            className="bottomNav_carttotal"
-          >
-            ¥{price}
-          </Text>
-          {isAllowDelivery ? (
-            <Button className="settlement_btn" onClick={this.handletoPay}>
-              去结算
-            </Button>
-          ) : (
-            <View className="submit_btn">还差¥{difference}起送</View>
-          )}
-        </View>
+        )}
+
         <AtFloatLayout
           isOpened={isOpened}
           title="已选商品"

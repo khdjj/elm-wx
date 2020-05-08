@@ -13,7 +13,7 @@ import "./select.scss";
 @observer
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: "选择收货地址",
+    navigationBarTitleText: "选择定位地址",
   };
 
   @observable store = {
@@ -25,7 +25,9 @@ export default class Index extends Component {
   componentDidMount() {
     const { userStore } = this.props;
     userStore.getUserInfo().then((res) => {
-      this.store.city = res.ret.weapp.city;
+      const { ret } = res;
+      const { weapp = {} } = ret;
+      this.store.city = weapp.city;
     });
   }
 
@@ -55,7 +57,7 @@ export default class Index extends Component {
       longitude: item.location.split(",")[0],
       location: `${item.district}${item.address}`,
     };
-    Taro.navigateTo({url:'/pages/goods/index'})
+    Taro.navigateTo({ url: "/pages/goods/index" });
   };
 
   render() {
@@ -75,7 +77,7 @@ export default class Index extends Component {
             onChange={this.handleSearchAddress.bind(this)}
           />
         </View>
-        {searchList.length === 0 && (
+        {/* {searchList.length === 0 && (
           <View>
             <AtButton
               type="primary"
@@ -85,7 +87,7 @@ export default class Index extends Component {
               新增地址
             </AtButton>
           </View>
-        )}
+        )} */}
 
         {searchList.length > 0 &&
           searchList.map((item) => (

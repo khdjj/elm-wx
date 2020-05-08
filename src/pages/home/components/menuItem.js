@@ -9,23 +9,27 @@ import "./menuItem.scss";
 @observer
 export default class MenuItem extends Component {
   render() {
-    console.error('menItem')
+    console.error("menItem");
     const { menus = {} } = this.props;
     const { foods = [] } = menus;
     return (
-      <View className="menuview-menuList">
-        <View className="menu">
-          <View className="heading">
-            <View className="category_title">
-              <View className="category_name">{menus.name}</View>
-              <View className="category_desc">{menus.description}</View>
+      <View>
+        {foods.length > 0 && (
+          <View className="menuview-menuList">
+            <View className="menu">
+              <View className="heading">
+                <View className="category_title">
+                  <View className="category_name">{menus.name}</View>
+                  <View className="category_desc">{menus.description}</View>
+                </View>
+              </View>
+              {/* 具体商品   */}
+              {foods.map((food, index) => (
+                <FoodItem key={index} taroKey={food.index} food={food} />
+              ))}
             </View>
           </View>
-          {/* 具体商品   */}
-          {foods.map((food, index) => (
-            <FoodItem key={index} taroKey={food.index} food={food} />
-          ))}
-        </View>
+        )}
       </View>
     );
   }

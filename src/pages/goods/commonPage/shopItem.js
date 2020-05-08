@@ -8,9 +8,12 @@ import { getImageUrl, formatDistance } from "@/service/utils";
 import "./shopItem.scss";
 
 @observer
+@inject('shoppingCartStore')
 export default class ShopItem extends Component {
   @observable store = {};
   handleToDetail = (rst) => {
+    const {shoppingCartStore:sStore} = this.props
+    sStore.clearData();
     Taro.navigateTo({ url: `/pages/home/detail?name=${rst.name}` });
   };
   render() {
@@ -28,7 +31,7 @@ export default class ShopItem extends Component {
             <View className="shop-main_title">{items.name}</View>
             <View className="shop-main_info">
               <View className="rateWrap">
-                <AtRate value={3.5} size={12} />
+                <AtRate value={items.rating} size={12} />
                 <Text className="rate">{items.rating}</Text>
                 <Text>月售{items.recent_order_num || 0}单</Text>
               </View>

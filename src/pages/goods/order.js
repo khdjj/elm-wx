@@ -18,9 +18,11 @@ export default class Index extends Component {
   };
 
   handleChangeOrderStatus = (id, status) => {
-    const { orderStore: oStore } = this.props;
+    const { orderStore: oStore, getOrderList } = this.props;
     oStore.changeOrderStatus(id, status).then((res) => {
-      console.error(res);
+      if (getOrderList) {
+        getOrderList();
+      }
     });
   };
 
@@ -110,7 +112,6 @@ export default class Index extends Component {
                         >
                           评价此单
                         </Button>
-                        <Button className="cardbutton">再来一单</Button>
                       </View>
                     )}
                   </View>

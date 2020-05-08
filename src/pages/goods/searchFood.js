@@ -8,15 +8,15 @@ import { getDistance } from "@/service/utils";
 import ShopItem from "./commonPage/shopItem";
 import "./components/main.scss";
 
-@inject("userStore",'restaurantStore')
+@inject("userStore", "restaurantStore")
 @observer
-export default class SearchFood extends Component {  
+export default class SearchFood extends Component {
   @observable store = {
     show: false,
     sort: "综合排序",
     offset: 0,
     limit: 8,
-    shops:[],
+    shops: [],
   };
   handleSort = (e) => {
     let { show } = this.store;
@@ -25,18 +25,17 @@ export default class SearchFood extends Component {
 
   componentDidMount() {
     const { category } = this.$router.params;
-    const {offset,limit} = this.store
+    const { offset, limit } = this.store;
     Taro.setNavigationBarTitle({
-      title: category || ""
+      title: category || "",
     });
-    this.fetchRestList(offset,limit,category);
+    this.store.search = category;
+    this.fetchRestList(offset, limit);
   }
 
-
-  
   formatList = (data) => {
-    const {  userStore } = this.props;
-    const {selectAddress:address} = userStore;
+    const { userStore } = this.props;
+    const { selectAddress: address } = userStore;
     const list = [];
     data.map((item) => {
       const distance = getDistance(
@@ -51,22 +50,25 @@ export default class SearchFood extends Component {
     return list;
   };
 
-  fetchRestList = async (offset = 0, limit = 8,search) => {
+  fetchRestList = async (offset = 0, limit = 8) => {
     Taro.showLoading();
     try {
       const { restaurantStore: restStore, userStore } = this.props;
       const { latitude, longitude } = userStore.selectAddress;
+      const { key, search } = this.store;
       const doc = await restStore.getRestaurant({
         offset,
         limit,
         search,
         latitude,
+        key,
         longitude,
       });
+      console.error(doc)
       const restList = this.formatList(doc.ret);
       this.store.shops =
         offset === 0 ? restList : [...this.store.shops].concat(restList);
-        console.error(this.store.shops)
+      console.error(this.store.shops);
     } catch (e) {
       console.error(e);
     } finally {
@@ -74,37 +76,64 @@ export default class SearchFood extends Component {
     }
   };
 
+  handleSort = (key, value) => {
+    this.store.offset = 0;
+    this.store.key = value;
+    this.store.sort = key;
+    this.fetchRestList();
+  };
+
   handleDrawerClick = (e) => {};
 
   render() {
-    const { show, sort,shops } = this.store;
+    const { show, sort, shops } = this.store;
     return (
       <View className="page">
         <View className="home-filter">
           <View className="filter-item">
-            <Text className="item-title" onClick={this.handleSort}>
-              {sort}
+            <Text
+              className="item-title"
+              style={sort === "rating" ? { color: "blue" } : ""}
+              onClick={() => this.handleSort("rating", { rating: -1 })}
+            >
+              好评优先
             </Text>
-            <AtIcon value="chevron-down" size="15" color="#333"></AtIcon>
           </View>
           <View className="filter-item">
-            <Text>距离最近</Text>
+            <Text
+              onClick={() =>
+                this.handleSort("recent_order_num", { recent_order_num: -1 })
+              }
+              style={sort === "recent_order_num" ? { color: "blue" } : ""}
+            >
+              销量最高
+            </Text>
           </View>
           <View className="filter-item">
-            <Text>品质联盟</Text>
+            <Text
+              onClick={() =>
+                this.handleSort("order_lead_time", { order_lead_time: 1 })
+              }
+              style={sort === "order_lead_time" ? { color: "blue" } : ""}
+            >
+              配送最快
+            </Text>
           </View>
           <View className="filter-item">
-            <Text className="item-title">筛选</Text>
-            <AtIcon value="filter" size="15" color="#333"></AtIcon>
+            <Text
+              onClick={() =>
+                this.handleSort("float_minimum_order_amount", {
+                  float_minimum_order_amount: 1,
+                })
+              }
+              style={
+                sort === "float_minimum_order_amount" ? { color: "blue" } : ""
+              }
+            >
+              起送价最低
+            </Text>
           </View>
         </View>
-        <AtDrawer
-          show={show}
-          right
-          mask
-          items={sortTypes}
-          onItemClick={this.handleDrawerClick}
-        />
         {shops.map((shopItem) => (
           <ShopItem taroKey={shopItem._id} items={shopItem} />
         ))}

@@ -38,6 +38,7 @@ export default class Detail extends Component {
     const { globalStore: gStore } = this.props;
     const { rateImages } = this.store;
     const promiseArr = [];
+    console.error(data)
     data.forEach((f) => {
       promiseArr.push(gStore.uploadFile(f.file.path));
     });

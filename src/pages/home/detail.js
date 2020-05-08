@@ -11,13 +11,17 @@ import "./detail.scss";
 
 const tabList = [{ title: "点餐" }, { title: "评价" }, { title: "商家" }];
 
-@inject("restaurantStore", "userStore")
+@inject("restaurantStore", "userStore", "commendStore", "shoppingCartStore")
 @observer
 export default class Index extends Component {
   @observable store = {
     current: 0,
+    offset: 0,
+    limit: 8,
     menu: [],
     rst: {},
+    noMore: false,
+    commendList: [],
   };
 
   async componentDidMount() {
@@ -43,17 +47,52 @@ export default class Index extends Component {
 
   handleTabClick = (current) => {
     this.store.current = current;
+    const { shoppingCartStore: sStore } = this.props;
+
+    if (current === 1) {
+      this.fetchComment();
+    }
+    if(current === 0){
+      sStore.changeVisible(true)
+    }else{
+      sStore.changeVisible(false)
+    }
   };
 
+  fetchComment() {
+    const { offset, limit, rst } = this.store;
+    const { commendStore: cStore, restaurant } = this.props;
+    cStore.getCommendList(rst._id).then((res) => {
+      const comment = res.ret;
+      this.store.commendList =
+        offset === 0 ? comment : [...commendList].concat(comment);
+      if (res.ret.length > 0) {
+        this.store.offset = limit + offset;
+      }
+      console.error(res.ret.length);
+      if (res.ret.length === 0) {
+        this.store.noMore = true;
+      }
+    });
+  }
+
+  onReachBottom() {
+    const { current } = this.store;
+    if (current === 1) {
+      this.fetchComment();
+    }
+  }
+
   render() {
-    const { current, menu = [], rst } = this.store;
-    console.error(rst);
+    const { current, menu = [], rst, commendList, noMore } = this.store;
     return (
       <View className="page">
         <DetailHeader rst={rst} />
         <View className="page">
           {current === 0 && menu.length > 0 && <MenuDetail menu={menu} />}
-          {current === 1 && <Commend restaurant={rst} />}
+          {current === 1 && (
+            <Commend rst={rst} comment={commendList} noMore={noMore} />
+          )}
           {current === 2 && <Message restaurant={rst} />}
           <AtTabBar
             tabList={tabList}

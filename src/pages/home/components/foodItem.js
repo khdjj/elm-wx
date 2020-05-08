@@ -52,7 +52,6 @@ export default class FoodItem extends Component {
               <View className="fooddetails_desc">{food.materials}</View>
               <View className="fooddetails_sales">
                 <Text>月售{food.month_sales}份</Text>
-                <Text> 好评率{food.satisfy_rate}</Text>
               </View>
               <View className="salesInfo_price">
                 <Text>￥{food.lowest_price}</Text>

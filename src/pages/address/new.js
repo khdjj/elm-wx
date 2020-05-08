@@ -1,10 +1,9 @@
 import Taro, { Component } from "@tarojs/taro";
-import { View, Text, Image, Button } from "@tarojs/components";
+import { View, Button } from "@tarojs/components";
 import { observable, toJS } from "mobx";
 import { observer, inject } from "@tarojs/mobx";
 import Location from "@/components/location";
-import { AtInput, AtIcon, AtRadio, AtTag } from "taro-ui";
-import { debounce, throttle } from "@/service/utils";
+import { AtInput, AtTag } from "taro-ui";
 
 import "./new.scss";
 
@@ -12,7 +11,7 @@ import "./new.scss";
 @inject("userStore")
 export default class Index extends Component {
   config = {
-    navigationBarTitleText: "新增地址"
+    navigationBarTitleText: "新增地址",
   };
 
   @observable store = {
@@ -21,18 +20,19 @@ export default class Index extends Component {
     address: "",
     houseNumber: "",
     tag: "",
-    sex: "",
+    sex: "女士",
     location: {},
-    // currentAddress: {}
   };
 
   componentDidMount() {
     const { userStore: uStore } = this.props;
     const { currentAddress = {} } = uStore;
-    const {address} = currentAddress;
-    this.store = {...currentAddress}
+    const { address = {} } = currentAddress;
+    if (Object.keys(currentAddress).length > 0) {
+      this.store = { ...currentAddress };
+    }
     this.store.location = address;
-    this.store.address = address.name
+    this.store.address = address.name;
   }
 
   handleSearchAddress = () => {
@@ -40,6 +40,7 @@ export default class Index extends Component {
   };
 
   handleSexTag = ({ name, active }) => {
+    console.error(this.store.sex);
     this.store.sex = name;
   };
 
@@ -47,11 +48,12 @@ export default class Index extends Component {
     this.store.tag = name;
   };
 
+
   handleInputChange = (key, value) => {
     this.store[key] = value;
   };
 
-  handleReciveAddress = address => {
+  handleReciveAddress = (address) => {
     if (address) {
       this.store.address = address.name;
       this.store.location = address;
@@ -69,33 +71,33 @@ export default class Index extends Component {
       houseNumber,
       tag,
       sex,
-      address: location
+      address: location,
     };
     console.error(id);
     try {
-      let doc ;
+      let doc;
       if (!id) {
         doc = await uStore.saveCurrentAddressAndSend({
-          ...data
+          ...data,
         });
-      }else {
+      } else {
         doc = await uStore.editUserAddress({
           ...data,
-          id
+          id,
         });
       }
 
       if (doc.error) {
         Taro.showModal({
           title: "错误提示",
-          content: doc.error
+          content: doc.error,
         });
       } else {
         Taro.showToast({
-          title:'保存成功',
-          icon:'success',
-          duration:2000
-        })
+          title: "保存成功",
+          icon: "success",
+          duration: 2000,
+        });
         Taro.navigateBack();
       }
     } catch (e) {
@@ -104,14 +106,8 @@ export default class Index extends Component {
   };
 
   render() {
-    const {
-      name,
-      phone,
-      address,
-      houseNumber,
-      tag,
-      sex,
-    } = this.store;
+    const { name, phone, address, houseNumber, tag, sex } = this.store;
+    console.error(sex, sex === "女士", sex == "女士");
     return (
       <View className="page">
         <AtInput

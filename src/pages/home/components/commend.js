@@ -16,29 +16,25 @@ export default class Comment extends Component {
     comment: [],
   };
 
-  componentDidMount() {
-    const { commendStore: cStore, restaurant } = this.props;
-    cStore.getCommendList(restaurant._id).then((res) => {
-      this.store.comment = res.ret;
-    });
-  }
-
-  onReachBottom = () => {
-    console.error("commend");
-  };
+  // componentDidMount() {
+  //   const { commendStore: cStore, restaurant } = this.props;
+  //   cStore.getCommendList(restaurant._id).then((res) => {
+  //     this.store.comment = res.ret;
+  //   });
+  // }
 
   render() {
-    const { comment = [] } = this.store;
+    const { comment = [], noMore, rst = {} } = this.props;
     return (
       <View className="commentContent">
         <View className="business_rate">
-          <Text className="rate_text">3.0</Text>
+          <Text className="rate_text">{rst.rating || 5}</Text>
           <View className="rate_detail">
             <Text>商家评分</Text>
-            <AtRate value={5.0} />
+            <AtRate value={rst.rating || 5} />
           </View>
         </View>
-        {comment.length > 0 ? (
+        {comment.length > 0 &&
           comment.map((c) => (
             <View className="comment">
               <View className="comment_avatar">
@@ -62,10 +58,8 @@ export default class Comment extends Component {
                 {c.reply && <View className="reply">商家回复：{c.reply}</View>}
               </View>
             </View>
-          ))
-        ) : (
-          <View>没有更多了</View>
-        )}
+          ))}
+        {noMore && <NoMore />}
       </View>
     );
   }

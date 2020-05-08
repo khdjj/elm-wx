@@ -11,7 +11,7 @@ import "./menuDetail.scss";
 @observer
 export default class MenuDetail extends Component {
   @observable store = {
-    isOpened: false
+    isOpened: false,
   };
   handleClose = () => {
     const { isOpened } = this.store;
@@ -22,7 +22,7 @@ export default class MenuDetail extends Component {
     const { isOpened } = this.store;
     const { menu = [] } = this.props;
     return (
-      <View className="page">
+      <View>
         <View>
           {menu.map((items, index) => (
             <MenuItem taroKey={index} key={index} menus={items} />
@@ -39,8 +39,8 @@ export default class MenuDetail extends Component {
             ￥3.5
           </Text>
           <View className="submit_btn">还差¥16.5起送</View>
-           <Button className="settlement_btn">去结算</Button> 
-        </View> 
+           <Button className="settlement_btn">去结算</Button>
+        </View>
         <AtFloatLayout
           isOpened={isOpened}
           title="已选商品"

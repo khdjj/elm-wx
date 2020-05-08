@@ -15,6 +15,7 @@ const store = observable({
 
   async getUserInfo() {
     const doc = await request("/user/getUserInfo", "GET");
+    console.error('getUserInfo',doc)
     return doc;
   },
 
