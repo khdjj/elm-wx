@@ -3474,9 +3474,9 @@ cookie@0.4.0:
   integrity sha1-vrQ35wIrO21JAZ0IhmUwPr6cFLo=
 
 cookiejar@^2.1.0:
-  version "2.1.2"
-  resolved "https://registry.npm.taobao.org/cookiejar/download/cookiejar-2.1.2.tgz#dd8a235530752f988f9a0844f3fc589e3111125c"
-  integrity sha1-3YojVTB1L5iPmghE8/xYnjERElw=
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/cookiejar/-/cookiejar-2.1.4.tgz#ee669c1fea2cf42dc31585469d193fef0d65771b"
+  integrity sha512-LDx6oHrK+PhzLKJU9j5S7/Y3jM/mUHvD/DeI1WQmJn652iPC5Y4TBzC9l+5OMOXlyTTA+SmVUPm0HQUwpD5Jqw==
 
 copy-concurrently@^1.0.0:
   version "1.0.5"
@@ -7158,10 +7158,15 @@ mobx@^4.8.0:
   resolved "https://registry.npm.taobao.org/mobx/download/mobx-4.15.0.tgz#039d07af132220ca776889f7adc429817b60a69b"
   integrity sha1-A50HrxMiIMp3aIn3rcQpgXtgpps=
 
-moment@2.x.x, moment@^2.10.6, moment@^2.22.2:
+moment@2.x.x, moment@^2.10.6:
   version "2.24.0"
   resolved "https://registry.npm.taobao.org/moment/download/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha1-DQVdU/UFKqZTyfbraLtdEr9cK1s=
+
+moment@^2.24.0:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 move-concurrently@^1.0.1:
   version "1.0.1"
